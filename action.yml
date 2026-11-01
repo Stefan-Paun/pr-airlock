@@ -1,0 +1,34 @@
+name: 'Schleuse – PR poisoning gate'
+description: 'Reads an incoming pull request as data through the GitHub API (never checks it out, never runs it) and blocks PolinRider-style payloads: code hidden behind whitespace padding in config files, known campaign markers, fonts/images that are really JavaScript, auto-run VS Code tasks, install scripts.'
+author: 'Stefan Paun'
+branding:
+  icon: 'shield'
+  color: 'yellow'
+
+inputs:
+  token:
+    description: 'GitHub token. The default token is enough to read the PR; pull-requests: write is only needed for comment: true.'
+    required: false
+    default: ${{ github.token }}
+  fail-on:
+    description: 'Fail the check at this severity or higher: block, warn or info.'
+    required: false
+    default: 'block'
+  comment:
+    description: 'Post (and keep updating) one sticky comment on the PR when there are findings.'
+    required: false
+    default: 'false'
+  sarif:
+    description: 'Write a SARIF file to this path (upload it with github/codeql-action/upload-sarif).'
+    required: false
+    default: ''
+
+outputs:
+  level:
+    description: 'Highest severity found: block, warn, info or none.'
+  findings:
+    description: 'Number of findings.'
+
+runs:
+  using: 'node24'
+  main: 'bin/action.mjs'
