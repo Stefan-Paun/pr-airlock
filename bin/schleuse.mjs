@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 import { readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
+import { realpathSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
 import { githubToken, client, parsePrRef } from '../lib/github.mjs';
 import { pruefePr, pruefeLokal } from '../lib/pruefung.mjs';
 import { toConsole } from '../lib/bericht/konsole.mjs';
@@ -77,6 +79,11 @@ async function main() {
   return exitCode(ergebnis, o.failOn);
 }
 
-if (process.argv[1] && import.meta.url === new URL(`file://${process.argv[1]}`).href) {
-  main().then((code) => process.exit(code)).catch((e) => { console.error(`schleuse: ${e.message}`); process.exit(2); });
+export function istHauptmodul(argv1 = process.argv[1]) {
+  try { return Boolean(argv1) && realpathSync(argv1) === fileURLToPath(import.meta.url); } catch { return false; }
+}
+
+if (istHauptmodul()) {
+  // exitCode statt exit(): sonst wird die Ausgabe in Pipes bei 64 KB abgeschnitten.
+  main().then((code) => { process.exitCode = code; }).catch((e) => { console.error(`schleuse: ${e.message}`); process.exitCode = 2; });
 }

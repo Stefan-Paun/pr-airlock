@@ -42,21 +42,32 @@ Exit codes: 0 clean or below threshold, 1 findings at or above `--fail-on`, 2 us
 
 | Rule | Severity | What it looks at |
 |---|---|---|
-| `anhang/fuellung` | block | an added line with ≥ 120 spaces/tabs *inside* it followed by ≥ 200 characters of code (or ≥ 200 leading spaces), with execution tokens such as `fromCharCode`, `eval(`, `atob(`, `child_process`; measured on real PolinRider PRs: 507 or 2 000 spaces, then 5 000 to 22 000 characters on one line |
+| `anhang/fuellung` | block (warn without execution tokens) | an added line with ≥ 120 whitespace characters *inside* it (spaces, tabs, NBSP, em-space, ideographic space, BOM) followed by ≥ 200 characters of code, or ≥ 200 leading whitespace characters; block with execution tokens such as `fromCharCode`, `eval(`, `atob(`, `child_process`, warn when only the entropy is high. Applies to every code-like file including `dist/` and `.min.js`. Measured on real PolinRider PRs: 507 or 2 000 spaces, then 5 000 to 22 000 characters on one line |
 | `anhang/riesenzeile` | block in config files, warn elsewhere | one line ≥ 1 500 characters, entropy ≥ 4.3, two or more execution tokens; skipped in `dist/`, `*.min.js`, lockfiles, source maps |
-| `anhang/global-tag` | block / warn | the version tag every known variant writes (`global['!']='8-270-2'`, `global.o='5-3-235-du'`, `global.i='A10-…'`) and the ESM shim `global['r']=require` |
+| `anhang/global-tag` | block / warn | the version tag every known variant writes (`global['!']='8-270-2'`, `global.o='5-3-235-du'`, `global.i='A10-…'`: key of at most two characters, value shaped like a version) and the ESM shim `global['r']=require`; `global.TZ = 'UTC'` in a test setup does not match |
 | `marker/*` | block | literal indicators from the OpenSourceMalware dossier and later reports: markers of variants 1 to 3, shuffle seeds (only in context), decoder names, XOR keys, TRON/Aptos dead-drop addresses, C2 hosts, `temp_auto_push.bat` including the `GIT_AUTHOR_DATE` variant |
-| `tarnung/magic-bytes` | block | a `.woff2`, `.ttf`, `.png`, `.jpg`, `.webp`, … whose first bytes are not that format (the blob is fetched from the API and only its head is inspected) |
+| `tarnung/magic-bytes` | block / warn | a `.woff2`, `.ttf`, `.png`, `.jpg`, `.webp`, … whose first bytes are not that format. Block when the content is text or looks like JavaScript, warn when it is merely another binary format (a PNG named `.ico`). Only the first 256 KB of a blob are streamed from the API, at most 100 blobs per PR |
 | `tarnung/base64-block` | warn | a ≥ 2 000-character Base64 run in a source file that is not a data-URL image |
 | `autostart/vscode-task` | block / warn | `.vscode/tasks.json` with `runOn: folderOpen` plus a command |
+| `autostart/vscode-settings`, `autostart/idea` | warn | workspace settings that enable automatic tasks; JetBrains startup configuration |
 | `autostart/npm-lifecycle` | warn (block if it pipes to a shell) | new or changed `preinstall`/`postinstall`/`prepare` scripts |
 | `autostart/pipe-to-shell` | warn (info in docs) | `curl … \| sh`, `iwr … \| iex`, encoded PowerShell |
 | `projekt/workflow-pwn-request` | block | a workflow that combines `pull_request_target` with a checkout of the PR head |
 | `projekt/workflow-aus-fork` | warn | workflow files changed from a fork |
 | `projekt/gitignore-versteck` | warn | `.gitignore` entries the campaign uses to hide its scripts |
 | `projekt/neues-skript-im-root` | warn | a new `.bat`/`.ps1`/`.sh` in the repository root |
+| `pruefung/unvollstaendig` | warn | something could not be checked: GitHub omitted a diff and the blob could not be read, the 3 000-file limit was hit, more than 100 binary files, fewer files returned than the PR reports. Fail-closed by design: use `fail-on: warn` if you want this to block. |
 
-One finding per file and rule. Findings carry a sanitised 160-character excerpt; control characters and Markdown syntax from the PR never reach your terminal, job summary or comment unescaped.
+One finding per file and rule, keeping the highest severity. Findings carry a sanitised 160-character excerpt. File names, excerpts and reasons are cleaned before they reach your terminal, the job summary or the comment: control and bidi characters are removed, line breaks become `␊`, Markdown syntax is escaped or wrapped in code spans, and a `::` at the start of a log line is neutralised so a file name cannot issue workflow commands. Comments are truncated below GitHub's 65 536-character limit, and only Schleuse's own bot comment is ever updated.
+
+## Field test (2026-11-01)
+
+| Set | PRs | Result |
+|---|---:|---|
+| documented PolinRider PRs: prisma/prisma-examples #8391, neutralinojs #1602, prisma-zod-generator #363 | 3 | all **block** (markers, padding rule, `.gitignore` hide) |
+| latest merged PRs of next.js, tailwindcss, shadcn/ui, NestJS, Prisma | 15 | clean |
+| merged PRs whose title names `postcss.config.mjs`, `tailwind.config` or `eslint.config.mjs` | 10 | clean |
+| merged PRs adding `.woff2` fonts | 6 | clean |
 
 ## What it does not do
 

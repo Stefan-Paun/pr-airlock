@@ -21,8 +21,13 @@ test('client: Token nur im Header, Pagination, Blob-Dekodierung, Fehlertext ohne
       const seite = Number(/[?&]page=(\d+)/.exec(url)[1]);
       return antwort(seite === 1 ? Array.from({ length: 100 }, (_, i) => ({ filename: `f${i}` })) : [{ filename: 'letzte' }]);
     }
-    if (url.includes('/git/blobs/')) return antwort({ encoding: 'base64', content: Buffer.from('774f4632abcd', 'hex').toString('base64') + '\n' });
-    if (url.includes('/pulls/9')) { if (gesperrt) { gesperrt = false; return antwort({ message: 'secondary' }, 403, { 'retry-after': '0' }); } return antwort({ number: 9 }); }
+    if (url.includes('/git/blobs/')) {
+      assert.equal(init.headers.Accept, 'application/vnd.github.raw+json');
+      const bytes = Buffer.concat([Buffer.from('774f4632abcd', 'hex'), Buffer.alloc(10_000, 1)]);
+      return { ok: true, status: 200, headers: new Headers(), arrayBuffer: async () => bytes.buffer.slice(bytes.byteOffset, bytes.byteOffset + bytes.length), text: async () => '' };
+    }
+    if (url.includes('/pulls/9')) { if (gesperrt) { gesperrt = false; return antwort({ message: 'API rate limit exceeded' }, 403, { 'retry-after': '0' }); } return antwort({ number: 9 }); }
+    if (url.includes('/pulls/403')) return antwort({ message: 'Resource not accessible' }, 403);
     if (url.includes('/pulls/404')) return antwort({ message: 'Not Found' }, 404);
     return antwort({});
   };
@@ -30,12 +35,15 @@ test('client: Token nur im Header, Pagination, Blob-Dekodierung, Fehlertext ohne
   const dateien = await gh.prDateien('a', 'b', 1);
   assert.equal(dateien.length, 101);
   assert.ok(aufrufe.every((a) => a.auth === 'Bearer GEHEIM' && !a.url.includes('GEHEIM')));
-  const bytes = await gh.blobBytes('a', 'b', 'a'.repeat(40));
-  assert.equal(bytes.toString('hex'), '774f4632abcd');
+  const bytes = await gh.blobBytes('a', 'b', 'a'.repeat(40), 6);
+  assert.equal(bytes.toString('hex'), '774f4632abcd', 'auf maxBytes gekappt');
   assert.equal(await gh.blobBytes('a', 'b', 'nicht-hex'), null);
   const pr = await gh.pr('a', 'b', 9);
   assert.equal(pr.number, 9);
   await assert.rejects(gh.pr('a', 'b', 404), (e) => /GitHub 404 für \/repos\/a\/b\/pulls\/404/.test(e.message) && !e.message.includes('GEHEIM'));
+  const vorher = aufrufe.length;
+  await assert.rejects(gh.pr('a', 'b', 403), /GitHub 403/);
+  assert.equal(aufrufe.length - vorher, 1, 'echtes 403 ohne Rate-Limit-Anzeichen wird nicht wiederholt');
 });
 
 test('pruefePr: erkennt Fork, lädt Blobs nur für Binärdateien, liefert Meta', async () => {

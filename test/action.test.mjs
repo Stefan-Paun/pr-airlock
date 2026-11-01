@@ -22,7 +22,7 @@ async function simuliere({ dateien, comment = 'false', failOn = 'block', vorhand
     if (url.includes('/issues/7/comments')) return antwort(vorhandeneKommentare);
     return antwort({});
   };
-  const env = { GITHUB_EVENT_PATH: event, GITHUB_REPOSITORY: 'org/repo', GITHUB_STEP_SUMMARY: summary, GITHUB_OUTPUT: output, GITHUB_TOKEN: 't', INPUT_COMMENT: comment, INPUT_FAIL_ON: failOn, INPUT_SARIF: sarif };
+  const env = { GITHUB_EVENT_PATH: event, GITHUB_REPOSITORY: 'org/repo', GITHUB_STEP_SUMMARY: summary, GITHUB_OUTPUT: output, GITHUB_TOKEN: 't', INPUT_COMMENT: comment, 'INPUT_FAIL-ON': failOn, INPUT_SARIF: sarif };
   const logs = [];
   try {
     const r = await lauf({ env, fetchImpl, log: (s) => logs.push(s) });
@@ -49,10 +49,17 @@ test('Action: comment=true postet einmal und aktualisiert danach den eigenen Kom
   const neu = await simuliere({ dateien: [boese], comment: 'true' });
   assert.equal(neu.posts.length, 1);
   assert.equal(neu.posts[0].method, 'POST');
-  const update = await simuliere({ dateien: [boese], comment: 'true', vorhandeneKommentare: [{ id: 42, body: '<!-- schleuse -->\nalt' }, { id: 43, body: 'mensch' }] });
+  const bot = { id: 42, body: '<!-- schleuse -->\nalt', user: { login: 'github-actions[bot]', type: 'Bot' } };
+  const nachahmer = { id: 41, body: '<!-- schleuse -->\nich bin nicht der Bot', user: { login: 'someone', type: 'User' } };
+  const update = await simuliere({ dateien: [boese], comment: 'true', vorhandeneKommentare: [nachahmer, bot, { id: 43, body: 'mensch', user: { login: 'x', type: 'User' } }] });
   assert.equal(update.posts.length, 1);
   assert.equal(update.posts[0].method, 'PATCH');
-  assert.match(update.posts[0].url, /comments\/42$/);
+  assert.match(update.posts[0].url, /comments\/42$/, 'nur der eigene Bot-Kommentar wird aktualisiert, nicht der Nachahmer');
+  const sauber = await simuliere({ dateien: [datei('src/a.js', ['ok'])], comment: 'true', vorhandeneKommentare: [bot] });
+  assert.equal(sauber.posts.length, 1);
+  assert.match(sauber.posts[0].body, /✅/, 'alter Befund-Kommentar wird auf sauber gesetzt');
+  const nieKommentiert = await simuliere({ dateien: [datei('src/a.js', ['ok'])], comment: 'true' });
+  assert.equal(nieKommentiert.posts.length, 0, 'sauber ohne alten Kommentar → kein neuer Kommentar');
 });
 
 test('Action: sauberer PR → nicht durchgefallen, level=none; warn nur mit fail-on warn', async () => {

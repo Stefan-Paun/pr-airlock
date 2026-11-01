@@ -144,9 +144,9 @@ test('pruefeDateien: dedupliziert je Datei und Regel, überspringt gelöschte, m
   const r = await pruefeDateien([d, weg, binaerOhnePatch]);
   assert.equal(r.befunde.filter((b) => b.regel === 'anhang/fuellung').length, 1);
   assert.ok(!r.befunde.some((b) => b.datei === 'old.config.js'));
-  assert.ok(r.hinweise.some((h) => /big\.ts.*kein Diff/.test(h)));
+  assert.ok(r.befunde.some((b) => b.regel === 'pruefung/unvollstaendig' && b.datei === 'src/big.ts'), 'Code-Datei ohne Diff und ohne ladbaren Inhalt → warn, nicht nur Hinweis');
   const viele = Array.from({ length: 3000 }, (_, i) => datei(`f${i}.txt`, ['x']));
-  assert.ok((await pruefeDateien(viele)).hinweise.some((h) => /3000/.test(h)));
+  assert.ok((await pruefeDateien(viele)).befunde.some((b) => b.regel === 'pruefung/unvollstaendig' && /3000/.test(b.warum)));
 });
 
 test('pruefeDateien: lädt Bytes nur für Binär-Endungen, fängt Ladefehler ab', async () => {
@@ -158,6 +158,6 @@ test('pruefeDateien: lädt Bytes nur für Binär-Endungen, fängt Ladefehler ab'
     datei('c.js', ['const a = 1;']),
   ], { ladeBytes });
   assert.deepEqual(geladen, ['a.woff2', 'b.png']);
-  assert.deepEqual(r.befunde, []);
-  assert.ok(r.hinweise.some((h) => /b\.png.*kaputt/.test(h)));
+  assert.deepEqual(r.befunde.map((b) => `${b.datei}:${b.regel}`), ['b.png:pruefung/unvollstaendig']);
+  assert.match(r.befunde[0].warum, /kaputt/);
 });

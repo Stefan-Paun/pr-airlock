@@ -5,7 +5,7 @@ on:
     types: [opened, synchronize, reopened]
 permissions:
   contents: read
-  pull-requests: write   # only needed for comment: true
+  pull-requests: write   # only needed for comment: true; use `permissions: {}` plus contents: read otherwise
 jobs:
   gate:
     name: PR poisoning gate
@@ -17,8 +17,9 @@ jobs:
         with:
           comment: true
           fail-on: block
-          sarif: schleuse.sarif
-      - uses: github/codeql-action/upload-sarif@v3
-        if: always()
-        with:
-          sarif_file: schleuse.sarif
+# Optional: SARIF for the Security tab. Needs `security-events: write` and lands on the base ref under pull_request_target.
+#          sarif: schleuse.sarif
+#      - uses: github/codeql-action/upload-sarif@v3
+#        if: always()
+#        with:
+#          sarif_file: schleuse.sarif
