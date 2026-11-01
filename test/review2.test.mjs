@@ -78,3 +78,24 @@ test('Lokaler Modus hat keinen Blob-Deckel; Markdown-Hinweis steht im Code-Span'
   const m = toMarkdown({ befunde: [], meta: { ziel: 'x', dateien: 1, hinweise: ['x @user www.evil.tld: kein Diff'] } });
   assert.ok(m.includes('`x @user www.evil.tld: kein Diff`'));
 });
+
+test('Runde 3: Budget, Tempo bei 5 MB kurzer Zeilen, exakte C2-Hosts, generierte Riesen-Datei nur warn', async () => {
+  const { pruefeDateien: pd, BLOB_CODE: max } = await import('../lib/regeln/index.mjs');
+  const kurz = { filename: 'src/x.js', status: 'modified', additions: 0, sha: 'a'.repeat(40) };
+  const t = Date.now();
+  // 2,2 MB kurzer Zeilen mit Budget 2 MB: schneller Test, gleiche Logik wie beim 5-MB-Limit
+  const buf = Buffer.from('a;\n'.repeat(750_000));
+  const r = await pd([kurz], { budget: 2 * 1024 * 1024, ladeBytes: async (d, m) => buf.subarray(0, m) });
+  assert.ok(Date.now() - t < 6000, `750k kurze Zeilen in ${Date.now() - t} ms (vor der Optimierung ~4 s)`);
+  assert.equal(r.befunde.find((b) => b.regel === 'pruefung/unvollstaendig')?.stufe, 'block', 'am Limit → block');
+  const lock = { filename: 'package-lock.json', status: 'modified', additions: 0, sha: 'a'.repeat(40) };
+  const r2 = await pd([lock], { ladeBytes: async (d, m) => Buffer.alloc(m, 0x20) });
+  assert.equal(r2.befunde.find((b) => b.regel === 'pruefung/unvollstaendig')?.stufe, 'warn', 'generierte Datei am Limit → warn');
+  const drei = Array.from({ length: 3 }, (_, i) => ({ filename: `c${i}.mjs`, status: 'modified', additions: 0, sha: 'a'.repeat(40) }));
+  const r3 = await pd(drei, { budget: 1000, ladeBytes: async (d, m) => Buffer.alloc(Math.min(m, 600), 0x20) });
+  assert.ok(r3.befunde.some((b) => /Budget/.test(b.warum) && b.stufe === 'block'));
+  const fp = datei('README.md', ['https://my-260120.vercel.app and default-configuration.vercel.app.evil.com']);
+  assert.deepEqual(pruefeMarker(fp, added(fp)), []);
+  const echt = datei('x.js', ['fetch("https://260120.vercel.app/x")']);
+  assert.equal(pruefeMarker(echt, added(echt))[0]?.regel, 'marker/polinrider-c2-host');
+});
