@@ -46,7 +46,7 @@ Exit codes: 0 clean or below threshold, 1 findings at or above `--fail-on`, 2 us
 | `anhang/riesenzeile` | block in config files, warn elsewhere | one line ≥ 1 500 characters, entropy ≥ 4.3, two or more execution tokens; skipped in `dist/`, `*.min.js`, lockfiles, source maps |
 | `anhang/global-tag` | block / warn | the version tag every known variant writes (`global['!']='8-270-2'`, `global.o='5-3-235-du'`, `global.i='A10-…'`: key of at most two characters, value shaped like a version) and the ESM shim `global['r']=require`; `global.TZ = 'UTC'` in a test setup does not match |
 | `marker/*` | block | literal indicators from the OpenSourceMalware dossier and later reports: markers of variants 1 to 3, shuffle seeds (only in context), decoder names, XOR keys, TRON/Aptos dead-drop addresses, C2 hosts, `temp_auto_push.bat` including the `GIT_AUTHOR_DATE` variant |
-| `tarnung/magic-bytes` | block / warn | a `.woff2`, `.ttf`, `.png`, `.jpg`, `.webp`, … whose first bytes are not that format. Block when the content is text or looks like JavaScript, warn when it is merely another binary format (a PNG named `.ico`). Only the first 256 KB of a blob are streamed from the API, at most 100 blobs per PR |
+| `tarnung/magic-bytes` | block / warn | a `.woff2`, `.ttf`, `.png`, `.jpg`, `.webp`, … whose first bytes are not that format. Block when the content is text or looks like JavaScript, warn when it is merely another binary format (a PNG named `.ico`). Only the first 256 KB of a binary blob are streamed from the API; code files without a diff are fetched up to 5 MB. At most 300 blobs per PR, riskiest first (code, then fonts, images last) |
 | `tarnung/base64-block` | warn | a ≥ 2 000-character Base64 run in a source file that is not a data-URL image |
 | `autostart/vscode-task` | block / warn | `.vscode/tasks.json` with `runOn: folderOpen` plus a command |
 | `autostart/vscode-settings`, `autostart/idea` | warn | workspace settings that enable automatic tasks; JetBrains startup configuration |
@@ -56,7 +56,7 @@ Exit codes: 0 clean or below threshold, 1 findings at or above `--fail-on`, 2 us
 | `projekt/workflow-aus-fork` | warn | workflow files changed from a fork |
 | `projekt/gitignore-versteck` | warn | `.gitignore` entries the campaign uses to hide its scripts |
 | `projekt/neues-skript-im-root` | warn | a new `.bat`/`.ps1`/`.sh` in the repository root |
-| `pruefung/unvollstaendig` | warn | something could not be checked: GitHub omitted a diff and the blob could not be read, the 3 000-file limit was hit, more than 100 binary files, fewer files returned than the PR reports. Fail-closed by design: use `fail-on: warn` if you want this to block. |
+| `pruefung/unvollstaendig` | warn | something could not be checked: GitHub omitted a diff and the blob could not be read, the 3 000-file limit was hit, more than 300 blobs, a code file larger than 5 MB, fewer files returned than the PR reports. Block when the unchecked part is code or a font or the file list is truncated, warn when it is only images. |
 
 One finding per file and rule, keeping the highest severity. Findings carry a sanitised 160-character excerpt. File names, excerpts and reasons are cleaned before they reach your terminal, the job summary or the comment: control and bidi characters are removed, line breaks become `␊`, Markdown syntax is escaped or wrapped in code spans, and a `::` at the start of a log line is neutralised so a file name cannot issue workflow commands. Comments are truncated below GitHub's 65 536-character limit, and only Schleuse's own bot comment is ever updated.
 
@@ -72,7 +72,7 @@ One finding per file and rule, keeping the highest severity. Findings carry a sa
 ## What it does not do
 
 - It does not execute, install or parse the PR's code semantically. A payload split across many short lines without padding would need a different detector.
-- GitHub returns at most 3 000 changed files per PR and omits diffs for very large files; Schleuse reports both as hints instead of pretending.
+- GitHub returns at most 3 000 changed files per PR and omits diffs for very large files. Code files without a diff are fetched whole (up to 5 MB) and checked; everything that still cannot be checked becomes a `pruefung/unvollstaendig` finding (warn for images, block for code and fonts) instead of a silent pass.
 - A clean result means *none of the known shapes*, not *safe*.
 - It is not a replacement for scanning your own machine or organisation after an infection; see [wormward](https://github.com/0fatihyildiz/wormward) and the [OpenSourceMalware dossier](https://github.com/OpenSourceMalware/PolinRider) for that.
 

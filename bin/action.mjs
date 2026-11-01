@@ -43,8 +43,9 @@ export async function lauf({ env = process.env, fetchImpl = fetch, log = (s) => 
   if (eingabe('comment', 'false') === 'true') {
     try {
       const vorhandene = await gh.kommentare(owner, repo, pr.number);
-      // Nur der eigene Bot-Kommentar zählt – ein Mensch kann den Marker nachahmen, aber nicht als Bot posten.
-      const meins = vorhandene.find((k) => typeof k.body === 'string' && k.body.startsWith('<!-- schleuse -->') && (k.user?.type === 'Bot' || /\[bot\]$/.test(k.user?.login || '')));
+      // Nur der eigene Kommentar zählt: vom Actions-Bot oder vom Inhaber des übergebenen Tokens (PAT). Ein Nachahmer mit dem Marker bleibt unberührt.
+      const ich = await gh.ich();
+      const meins = vorhandene.find((k) => typeof k.body === 'string' && k.body.startsWith('<!-- schleuse -->') && (k.user?.type === 'Bot' || /\[bot\]$/.test(k.user?.login || '') || (ich && k.user?.login === ich)));
       if (ergebnis.befunde.length) {
         if (meins) await gh.kommentarAendern(owner, repo, meins.id, markdown);
         else await gh.kommentarSetzen(owner, repo, pr.number, markdown);

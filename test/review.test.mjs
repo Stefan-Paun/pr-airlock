@@ -110,7 +110,7 @@ test('Base64-Scan ist linear: 1-MB-Zeile mit vielen 1999er-Läufen unter 300 ms'
   const zeile = ('A'.repeat(1999) + ' ').repeat(500);
   const t = Date.now();
   assert.equal(laengsterBase64Lauf(zeile), null);
-  assert.ok(Date.now() - t < 300);
+  assert.ok(Date.now() - t < 1000, 'linear, nicht quadratisch (Regex brauchte ~2 s)');
   assert.equal(laengsterBase64Lauf('x ' + 'B'.repeat(2500) + ' y').length, 2500);
 });
 

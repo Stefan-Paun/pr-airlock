@@ -15,7 +15,7 @@ inputs:
     required: false
     default: 'block'
   comment:
-    description: 'Post (and keep updating) one sticky comment on the PR when there are findings.'
+    description: 'Keep one sticky comment on the PR: posted on the first finding, updated on every run, rewritten to "clean" once findings are gone.'
     required: false
     default: 'false'
   sarif:
