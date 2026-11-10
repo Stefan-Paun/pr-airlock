@@ -24,12 +24,14 @@ export async function lauf({ env = process.env, fetchImpl = fetch, log = (s) => 
   const [owner, repo] = String(env.GITHUB_REPOSITORY || event.repository?.full_name || '').split('/');
   if (!owner || !repo) throw new Error('Repository unbekannt (GITHUB_REPOSITORY)');
   const token = eingabe('token') || env.GITHUB_TOKEN || '';
-  const failOn = eingabe('fail-on', 'block');
-  if (!STUFEN.includes(failOn)) throw new Error('fail-on muss block, warn oder info sein');
+  // Rangfolge: Eingabe fail-on (wenn gesetzt) > failOn in .schleuse.json (Basis-Stand) > block.
+  const failOnEingabe = eingabe('fail-on') || null;
+  if (failOnEingabe && !STUFEN.includes(failOnEingabe)) throw new Error('fail-on muss block, warn oder info sein');
   const api = env.GITHUB_API_URL || 'https://api.github.com';
   const gh = client({ token, fetchImpl, api, log: (s) => logSicher(`  · ${s}`) });
 
-  const ergebnis = await pruefePr(gh, { owner, repo, nummer: pr.number }, { log: (s) => logSicher(`  · ${s}`) });
+  const ergebnis = await pruefePr(gh, { owner, repo, nummer: pr.number }, { log: (s) => logSicher(`  · ${s}`), eingaben: { failOn: failOnEingabe } });
+  const failOn = ergebnis.konfig.failOn;
   const stufe = ergebnis.befunde.length ? hoechsteStufe(ergebnis.befunde) : 'none';
   logSicher(toConsole(ergebnis, { farben: false }));
 

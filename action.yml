@@ -11,9 +11,9 @@ inputs:
     required: false
     default: ${{ github.token }}
   fail-on:
-    description: 'Fail the check at this severity or higher: block, warn or info.'
+    description: 'Fail the check at this severity or higher: block, warn or info. If unset, failOn from .schleuse.json (read from the base branch) applies, otherwise block.'
     required: false
-    default: 'block'
+    default: ''
   comment:
     description: 'Keep one sticky comment on the PR: posted on the first finding, updated on every run, rewritten to "clean" once findings are gone.'
     required: false

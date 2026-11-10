@@ -26,7 +26,7 @@ jobs:
 
 Make the check required in branch protection and the gate is closed. No checkout step, no `npm install`, no `${{ }}` inside `run:`; a malicious PR cannot edit the check away because `pull_request_target` always runs the workflow as it exists on the base branch.
 
-Inputs: `fail-on` (`block` default, `warn`, `info`), `comment` (`false`), `sarif` (path; upload with `github/codeql-action/upload-sarif`), `token`. Outputs: `level`, `findings`.
+Inputs: `fail-on` (`block`, `warn`, `info`; unset means `failOn` from `.schleuse.json`, else `block`), `comment` (`false`), `sarif` (path; upload with `github/codeql-action/upload-sarif`), `token`. Outputs: `level`, `findings`.
 
 ## From the terminal
 
@@ -56,9 +56,48 @@ Exit codes: 0 clean or below threshold, 1 findings at or above `--fail-on`, 2 us
 | `projekt/workflow-aus-fork` | warn | workflow files changed from a fork |
 | `projekt/gitignore-versteck` | warn | `.gitignore` entries the campaign uses to hide its scripts |
 | `projekt/neues-skript-im-root` | warn | a new `.bat`/`.ps1`/`.sh` in the repository root |
+| `konfig/aenderung`, `konfig/ungueltig` | block | the PR changes `.schleuse.json`, or the base branch's configuration is invalid or unreadable; see [Configuration](#configuration-schleusejson). Not configurable |
 | `pruefung/unvollstaendig` | warn / block | something could not be checked: GitHub omitted a diff and the blob could not be read, the 3 000-file limit was hit, more than 300 blobs, a code file larger than 5 MB, fewer files returned than the PR reports. Block when the unchecked part is code or a font or the file list is truncated, warn when it is only images. |
 
 One finding per file and rule, keeping the highest severity. Findings carry a sanitised 160-character excerpt. File names, excerpts and reasons are cleaned before they reach your terminal, the job summary or the comment: control and bidi characters are removed, line breaks become `␊`, Markdown syntax is escaped or wrapped in code spans, and a `::` at the start of a log line is neutralised so a file name cannot issue workflow commands. Comments are truncated below GitHub's 65 536-character limit, and only Schleuse's own bot comment is ever updated.
+
+## Configuration: `.schleuse.json`
+
+A project can tune the gate with a `.schleuse.json` in the repository root (example: [`examples/schleuse.json`](examples/schleuse.json)). Validate it with `node bin/schleuse.mjs config pruefe [file]`, see what is in effect with `config zeige [file]` (`--base <ref>` reads it from the merge-base instead of the working tree).
+
+```json
+{
+  "version": 1,
+  "regeln": { "autostart/pipe-to-shell": "hinweis", "tarnung/*": "warnung" },
+  "ausnahmen": [{ "pfad": "test/fixtures/**", "regel": "anhang/riesenzeile", "grund": "synthetic test data" }],
+  "schwellen": { "riesenzeile": 3000 },
+  "failOn": "fehler"
+}
+```
+
+| Field | Meaning |
+|---|---|
+| `version` | schema version, must be `1` |
+| `regeln` | rule id or `family/*` → `aus` \| `hinweis` \| `warnung` \| `fehler` (= info / warn / block). An exact id beats its family. The level replaces the rule's own level for every finding of that rule |
+| `ausnahmen` | list of `{ pfad, regel?, grund }`. `grund` is mandatory (at least 8 characters). `pfad` supports `*` (within a segment), `**` (across segments, only as a whole segment) and `?`, rooted at the repository root, case-sensitive; a pattern that matches everything (`**`, `*`, `**/*`) is rejected |
+| `schwellen` | the numeric constants the rules use today: `fuellung`, `fuehrend`, `mindestCode`, `riesenzeile`, `entropie`, `tokenMin`, `base64Min` (higher = fewer findings; each has a sane range) |
+| `failOn` | `hinweis` \| `warnung` \| `fehler`: the run fails at this level or higher |
+
+The file is checked strictly: unknown fields, unknown rule ids, broken patterns and out-of-range values are errors that name the field, the value and a suggestion for typos (`anhang/fuelung` → did you mean `anhang/fuellung`?). A broken file is never ignored silently: the defaults apply and the run reports `konfig/ungueltig` (fehler).
+
+**Order of precedence** for the fail threshold: Action input `fail-on` / CLI `--fail-on` (if set) > `failOn` in `.schleuse.json` > `block`. Without a file nothing changes.
+
+### Threat model
+
+A gate that a pull request can reconfigure is no gate. So:
+
+1. **The configuration is read from the base, never from the code under review.** In the Action via the API at the target commit (`base.sha`), locally from the merge-base (`--base <ref>`).
+2. **A PR that touches `.schleuse.json`** (edits, creates, deletes or renames it) gets its own finding `konfig/aenderung` at level fehler, with a list of every loosening it contains (rules lowered, new exceptions, raised thresholds, later `failOn`). The change has no effect on that run; a maintainer reads it and merges it separately.
+3. **Protected rules cannot be turned off or lowered**, neither one by one nor by family: `anhang/fuellung`, `anhang/global-tag`, `tarnung/magic-bytes`, `autostart/vscode-task`, `projekt/workflow-pwn-request`, `pruefung/unvollstaendig` and every `marker/*` that blocks (all but `marker/blockchain-dead-drop`). They are the rules with the highest hit severity and practically no false positives; if one fires, the answer is to look, not to dial it down. The only way to silence one is an exception that names the rule exactly and the path, with a `grund`. An exception without `regel` or with a family never covers them.
+4. **Nothing disappears silently.** Every finding removed by an exception or by `aus` is listed in the console, the job summary, the comment and the SARIF file (`suppressions`) as "unterdrückt wegen: …" with its reason; downgraded findings say what they were.
+5. File names that contain control or bidi characters never match an exception, and the `konfig/*` findings cannot be configured at all.
+
+What this does not stop: an exception is trusted once a maintainer has merged it, so an attacker can still put a payload under an excepted path in a later PR. That is why exceptions are narrow by design (rule plus path), visible in every report, and protected rules need a named exception.
 
 ## Field test (2026-11-01)
 
@@ -82,7 +121,7 @@ One finding per file and rule, keeping the highest severity. Findings carry a sa
 node --test test/*.test.mjs
 ```
 
-Test fixtures are synthetic: they reproduce the *shape* of the payloads (padding, line length, entropy, tokens, tag syntax), never working code. Modules: `lib/diff.mjs` (patch parsing), `lib/regeln/*` (one file per rule family, pure functions over added lines and blob bytes), `lib/github.mjs` (API client with injectable `fetch`), `lib/pruefung.mjs`, `lib/bericht/*` (console, Markdown, SARIF), `bin/action.mjs`, `bin/schleuse.mjs`.
+Test fixtures are synthetic: they reproduce the *shape* of the payloads (padding, line length, entropy, tokens, tag syntax), never working code. Modules: `lib/diff.mjs` (patch parsing), `lib/regeln/*` (one file per rule family, pure functions over added lines and blob bytes), `lib/github.mjs` (API client with injectable `fetch`), `lib/pruefung.mjs`, `lib/konfig/*` (pattern matching, schema, applying rules and exceptions, change detection, `config` commands), `lib/bericht/*` (console, Markdown, SARIF), `bin/action.mjs`, `bin/schleuse.mjs`.
 
 ## Credits
 
