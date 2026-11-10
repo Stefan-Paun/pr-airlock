@@ -25,4 +25,4 @@ nicht im selben Pull Request abschalten.
 Neue Regeln, Konfiguration per Code-Kommentar, verschachtelte Konfigurationen in Unterordnern, Zeichenklassen im Muster.
 
 ## Stand
-Etappe 1 in Arbeit.
+Etappe 1 fertig.
