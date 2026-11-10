@@ -95,3 +95,10 @@ test('Schema: geschützte Regeln lassen sich nicht abschalten oder absenken', ()
   assert.match(fam.hinweise[0], /geschützte Regel/);
   assert.ok(REGEL_IDS.length > 30);
 });
+
+test('Beispiel-Datei in examples/ ist gültig', async () => {
+  const { readFile } = await import('node:fs/promises');
+  const r = ladeKonfig(await readFile(new URL('../examples/schleuse.json', import.meta.url), 'utf8'));
+  assert.deepEqual(r.fehler, []);
+  assert.equal(r.konfig.ausnahmen.length, 2);
+});

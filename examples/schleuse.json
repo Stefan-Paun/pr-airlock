@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "regeln": {
+    "autostart/pipe-to-shell": "hinweis",
+    "tarnung/base64-block": "warnung",
+    "projekt/*": "warnung"
+  },
+  "ausnahmen": [
+    {
+      "pfad": "test/fixtures/**",
+      "regel": "anhang/riesenzeile",
+      "grund": "Synthetische Testdaten mit absichtlich langen Zeilen"
+    },
+    {
+      "pfad": "docs/**",
+      "regel": "autostart/pipe-to-shell",
+      "grund": "Installationsanleitungen zeigen curl | sh als Beispiel"
+    }
+  ],
+  "schwellen": {
+    "riesenzeile": 3000
+  },
+  "failOn": "fehler"
+}

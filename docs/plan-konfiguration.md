@@ -25,4 +25,4 @@ nicht im selben Pull Request abschalten.
 Neue Regeln, Konfiguration per Code-Kommentar, verschachtelte Konfigurationen in Unterordnern, Zeichenklassen im Muster.
 
 ## Stand
-Etappen 1–4 fertig (Muster, Schema, Anwenden, Basis-Stand, Änderungsbefund, Bericht, Action, CLI).
+Alle 5 Etappen fertig: Muster, Schema, Anwenden (Abstufen, Familien, Ausnahmen, geschützte Regeln, Schwellen), Basis-Stand mit Änderungsbefund, Bericht, Action-Rangfolge, `config pruefe|zeige`, Beispiel und README.
