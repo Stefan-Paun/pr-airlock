@@ -21,3 +21,13 @@ Temporäre Repos mit den synthetischen Nachbildungen aus `test/hilfen.mjs`; Verg
 
 ## Nicht dabei
 Neue Regeln, Ausführen von Code aus geprüften Repos, Submodule betreten, Arbeitsverzeichnis-Änderungen (uncommitted) im Scan.
+
+## Stand
+Alle fünf Etappen sind umgesetzt und getestet (`test/lokal.test.mjs`, `test/git-sicherheit.test.mjs`).
+
+Entscheidungen:
+- Der Scan liest `HEAD` aus der Objektdatenbank statt aus dem Arbeitsverzeichnis: kein Symlink-Folgen, keine Filter, keine ignorierten Dateien.
+- Der git-Wrapper erlaubt nur `diff`, `ls-tree`, `cat-file`, `rev-parse`, `merge-base`.
+- Lokal gelten großzügigere Blob-Grenzen (5 000 Blobs, 200 MB), weil keine API-Minuten kosten.
+- Nicht anwendbar im Scan: `projekt/workflow-aus-fork`, `projekt/neues-skript-im-root`.
+- Offen: Die Quelle in `pruefung/unvollstaendig` nennt weiter die GitHub-API-Grenzen; Scan von Unterordnern prüft immer das ganze Repo.

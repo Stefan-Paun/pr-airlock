@@ -38,6 +38,24 @@ node bin/schleuse.mjs pr owner/repo#1 --md report.md --sarif report.sarif --fail
 
 Exit codes: 0 clean or below threshold, 1 findings at or above `--fail-on`, 2 usage or API error. Node 20+, no dependencies.
 
+## Local mode: `diff` and `scan` (no GitHub, no token)
+
+```sh
+node bin/schleuse.mjs diff                      # HEAD against the merge-base with origin/HEAD, main or master
+node bin/schleuse.mjs diff main..other-branch   # two-dot: direct comparison; main...other-branch: against the merge-base
+node bin/schleuse.mjs diff other-branch         # one revision = the head; base = merge-base with the main branch (--base <rev> to choose)
+node bin/schleuse.mjs scan [path]               # every git-tracked file of HEAD: "I cloned this, is it clean?"
+```
+
+Same rules, same reports (`--json`, `--md`, `--sarif`, `--fail-on`) and exit codes (0 / 1 / 2) as `pr`. The files come from `git` instead of the API, in the same shape (`filename`, `status`, `additions`, `patch`, `sha`), so a given content yields the same findings either way. Renames and binary files behave as in the API path.
+
+- **Nothing from the checked repo runs.** git is started as a child process with an argument list (never a shell), a cleaned environment (`GIT_CONFIG_NOSYSTEM`, no global config, no inherited `GIT_*`), and `-c` switches that turn off hooks, pager, `core.fsmonitor`; diffs use `--no-ext-diff --no-textconv`. Only read-only object commands (`diff`, `ls-tree`, `cat-file`, `rev-parse`, `merge-base`) are allowed; `status`/`checkout`/`add` (which would touch clean/smudge filters) are refused. Revisions are resolved to commit SHAs first and never passed on as options. Symlinks and submodules are never followed (reported as a note). `.gitattributes` and `.git/config` of the checked repo have no effect; tests with a prepared repo prove it.
+- **`diff`** reads one patch per file (≤ 1 MB each, ≤ 50 MB in total); code without a patch is read whole from the blob (≤ 5 MB), anything beyond a limit becomes a `pruefung/unvollstaendig` finding as in the API path. At most 3 000 files.
+- **`scan`** reads the committed state of `HEAD` from the object database (not the working tree: uncommitted edits and ignored files are not part of it), skips `node_modules` and symlinks (both noted), and checks up to 20 000 files. Rules that only make sense for a change (`projekt/workflow-aus-fork`, `projekt/neues-skript-im-root`) are off in a scan and listed as *not applicable* in the output (`meta.nichtAnwendbar` in the JSON). Run it from the repo root: it always scans the whole repository.
+- A leading dash in a file name or revision is safe; use `--` before a positional argument that starts with `-`.
+
+[`examples/pre-merge.sh`](examples/pre-merge.sh) shows a pre-merge call.
+
 ## What it checks
 
 | Rule | Severity | What it looks at |
@@ -82,7 +100,7 @@ One finding per file and rule, keeping the highest severity. Findings carry a sa
 node --test test/*.test.mjs
 ```
 
-Test fixtures are synthetic: they reproduce the *shape* of the payloads (padding, line length, entropy, tokens, tag syntax), never working code. Modules: `lib/diff.mjs` (patch parsing), `lib/regeln/*` (one file per rule family, pure functions over added lines and blob bytes), `lib/github.mjs` (API client with injectable `fetch`), `lib/pruefung.mjs`, `lib/bericht/*` (console, Markdown, SARIF), `bin/action.mjs`, `bin/schleuse.mjs`.
+Test fixtures are synthetic: they reproduce the *shape* of the payloads (padding, line length, entropy, tokens, tag syntax), never working code. Modules: `lib/diff.mjs` (patch parsing), `lib/regeln/*` (one file per rule family, pure functions over added lines and blob bytes), `lib/github.mjs` (API client with injectable `fetch`), `lib/pruefung.mjs`, `lib/git.mjs` (sandboxed git child process) and `lib/lokal.mjs` (local `diff`/`scan`: git → API-shaped file list), `lib/bericht/*` (console, Markdown, SARIF), `bin/action.mjs`, `bin/schleuse.mjs`.
 
 ## Credits
 
