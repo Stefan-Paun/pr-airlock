@@ -25,4 +25,4 @@ nicht im selben Pull Request abschalten.
 Neue Regeln, Konfiguration per Code-Kommentar, verschachtelte Konfigurationen in Unterordnern, Zeichenklassen im Muster.
 
 ## Stand
-Etappe 1 fertig.
+Etappen 1–3 fertig (Muster, Schema, Anwenden, Basis-Stand, Änderungsbefund).
