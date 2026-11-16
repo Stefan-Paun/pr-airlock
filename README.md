@@ -19,7 +19,7 @@ jobs:
   gate:
     runs-on: ubuntu-latest
     steps:
-      - uses: Stefan-Paun/schleuse@v1
+      - uses: Stefan-Paun/pr-airlock@v1
         with:
           comment: true       # one sticky comment with the findings, updated on every push
 ```

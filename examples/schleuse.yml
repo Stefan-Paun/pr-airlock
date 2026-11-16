@@ -13,7 +13,7 @@ jobs:
     timeout-minutes: 10
     steps:
       # No checkout on purpose: the PR is read through the API as data and never executed.
-      - uses: Stefan-Paun/schleuse@v1
+      - uses: Stefan-Paun/pr-airlock@v1
         with:
           comment: true
           fail-on: block
