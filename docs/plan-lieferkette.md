@@ -23,3 +23,11 @@ Ein PR kann über Abhängigkeiten angreifen, ohne eine auffällige Codezeile: ne
 
 ## Nicht dabei
 Registry-Abfragen, andere Ökosysteme, Liste populärer Pakete.
+
+## Stand
+Alle drei Etappen sind umgesetzt (`test/lieferkette-leser.test.mjs`, `test/lieferkette.test.mjs`, `test/fixtures/lieferkette/harmlos.mjs` mit 16 harmlosen Szenarien).
+
+Entscheidungen:
+- Das eigene Manifest-Install-Skript (Teil 4 des Issues) war schon auf main als `autostart/npm-lifecycle`; `lieferkette/install-skript` deckt nur das Lockfile ab, damit es keine Doppelbefunde gibt.
+- „Nicht prüfbar“ ist ein Hinweis im Bericht, kein Befund: Er soll nicht blocken, aber sichtbar sein.
+- Namensnähe absichtlich eng (kein Zeichen am Ende, nicht am ersten Zeichen ersetzt, `@types/*` ausgenommen), damit `vue`/`vuex` oder `react`/`@testing-library/react` nicht anschlagen.
