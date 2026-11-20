@@ -17,8 +17,9 @@ test('Diff-Hilfe und Rückwärts-Anwenden: Basis-Stand wird exakt rekonstruiert'
 
 test('Manifest: ganzes JSON und kaputte Eingaben', () => {
   const m = leseManifest(json({ dependencies: { a: '^1.0.0' }, devDependencies: { b: '2.0.0', a: '9' }, scripts: { x: 'y' } }));
-  assert.deepEqual([...m.keys()], ['a', 'b']);
-  assert.equal(m.get('b').abschnitt, 'devDependencies');
+  assert.deepEqual([...m.values()].map((x) => `${x.abschnitt}:${x.name}`), ['dependencies:a', 'devDependencies:b', 'devDependencies:a'], 'jeder Abschnitt zählt für sich');
+  const ueber = leseManifest(json({ overrides: { a: { b: 'git+https://code.example/b.git' } }, resolutions: { '**/c': '1.0.0' }, pnpm: { overrides: { d: 'file:../d' } } }));
+  assert.deepEqual([...ueber.values()].map((x) => `${x.abschnitt}:${x.name}`), ['overrides:b', 'resolutions:**/c', 'overrides:d']);
   for (const kaputt of ['{', '', '[]', 'null', '"text"', '{"dependencies": [1]}']) {
     const r = leseManifest(kaputt);
     assert.ok(r === null || r.size === 0, kaputt);
@@ -37,7 +38,7 @@ test('Manifest-Änderung: mit Kopf-Stand exakt, ohne nur aus den Hunks', () => {
   assert.equal(voll.vollstaendig, true);
   assert.deepEqual(voll.neu.map((x) => x.name), ['zeta-lib']);
   assert.deepEqual(voll.geaendert.map((x) => [x.name, x.vorher, x.spec]), [['eps-lib', '^5.0.0', '^5.1.0']]);
-  assert.ok(voll.vorher.has('alpha-lib'));
+  assert.ok([...voll.vorher.values()].some((x) => x.name === 'alpha-lib'));
   const teil = manifestAenderung(p);
   assert.equal(teil.vollstaendig, false);
   assert.deepEqual(teil.neu.map((x) => [x.name, x.abschnitt]), [['zeta-lib', 'dependencies']]);
@@ -92,8 +93,9 @@ test('npm-Lock: verschachtelte node_modules, Workspace-Link, Legacy-dependencies
   const alt = json({ lockfileVersion: 2, packages: { 'node_modules/a/node_modules/b': { version: '1.0.0', resolved: reg('b', '1.0.0') }, 'node_modules/ws-a': { resolved: 'packages/ws-a', link: true } }, dependencies: { b: { version: '1.0.0', resolved: reg('b', '1.0.0') } } });
   const neu = alt.replaceAll('1.0.0', '1.0.1');
   const r = lockAenderung(einheitlicherDiff(alt, neu), 'npm');
-  assert.deepEqual(r.paare.map((p) => [p.schluessel, p.name]), [['node_modules/a/node_modules/b', 'b']]);
-  assert.equal(r.unklar, 0, 'Legacy-Abschnitt ist bekannt „außen“');
+  assert.deepEqual(r.paare.map((p) => [p.schluessel, p.name]), [['node_modules/a/node_modules/b', 'b'], ['b', 'b']], 'Legacy-Abschnitt wird wie v1 gelesen');
+  assert.equal(r.unklar, 0);
+  assert.equal(r.paare.some((p) => p.name === 'ws-a'), false, 'Workspace-Link ohne Änderung');
 });
 
 test('yarn.lock v1 und Berry', () => {
@@ -155,6 +157,42 @@ test('Format, Quelle und Algorithmus', () => {
   assert.equal(quelle('').art, 'leer');
   assert.equal(quelle('https://').host, null);
   assert.equal(algorithmus(integ('a', 'sha1')), 'sha1');
-  assert.equal(algorithmus('10c0/abcdef'), 'hex');
+  assert.equal(algorithmus('10c0/abcdef'), 'berry-10c0');
+  assert.equal(algorithmus('abcdef0123'), 'hex');
   assert.equal(algorithmus(null), null);
+});
+
+test('Review: npm-Feld-Regex ohne Backtracking-Fraß, einzeilige Einträge, Lockfile v1', () => {
+  const t0 = Date.now();
+  lockAenderung('@@ -1,1 +1,3 @@\n "node_modules/a": {\n+    "version": "' + ' '.repeat(50000) + 'x\n+    "resolved": "' + '"'.repeat(50000), 'npm');
+  assert.ok(Date.now() - t0 < 500, `zu langsam: ${Date.now() - t0} ms`);
+  const ein = (url) => `{\n  "packages": {\n    "node_modules/kern-lib": {"version":"1.0.0","resolved":"${url}","integrity":"sha512-a"},\n    "node_modules/x": {"version":"2.0.0"}\n  }\n}`;
+  const r = lockAenderung(einheitlicherDiff(ein('https://registry.npmjs.org/kern-lib/-/kern-lib-1.0.0.tgz'), ein('https://pakete.boese.example/k.tgz')), 'npm');
+  assert.equal(r.paare.length, 1);
+  assert.equal(r.paare[0].vorher.resolved, 'https://registry.npmjs.org/kern-lib/-/kern-lib-1.0.0.tgz');
+  assert.equal(r.paare[0].nachher.resolved, 'https://pakete.boese.example/k.tgz');
+  const v1 = (url) => json({ lockfileVersion: 1, requires: true, dependencies: { 'kern-lib': { version: '1.0.0', resolved: url, integrity: integ('A'), requires: { hilfe: '^1.0.0' }, dependencies: { hilfe: { version: '1.0.0', resolved: reg('hilfe', '1.0.0') } } } } });
+  const r1 = lockAenderung(einheitlicherDiff(v1(reg('kern-lib', '1.0.0')), v1('https://pakete.boese.example/k.tgz')), 'npm');
+  assert.deepEqual(r1.paare.map((p) => [p.name, quelle(p.nachher.resolved).host]), [['kern-lib', 'pakete.boese.example']]);
+});
+
+test('Review: pnpm-Schlüssel mit Tarball/git, verschobene Einträge, Format- und cacheKey-Wechsel', () => {
+  const p = (key, res) => `lockfileVersion: '9.0'\n\npackages:\n\n  ${key}:\n    resolution: ${res}\n    version: 1.0.0\n`;
+  const r = lockAenderung(einheitlicherDiff(p('foo@1.0.0', `{integrity: ${integ('A')}}`), p('foo@https://pakete.boese.example/foo.tgz', '{tarball: https://pakete.boese.example/foo.tgz}')), 'pnpm');
+  assert.equal(r.paare[0].name, 'foo');
+  assert.equal(quelle(r.paare[0].nachher.resolved).host, 'pakete.boese.example');
+  assert.ok(r.paare[0].vorher, 'Gegenstück gefunden');
+  const g = lockAenderung(einheitlicherDiff(p('/foo@1.0.0', '{integrity: x}'), p('code.example/nutzer/foo/0123abcd', '{commit: 0123abcd, repo: https://code.example/nutzer/foo.git, type: git}')), 'pnpm');
+  assert.equal(quelle(g.paare[0].nachher.resolved).art, 'git');
+  // yarn: Eintrag oben gelöscht, unten mit fremder Quelle wieder eingefügt → als Paar erkannt
+  const fueller = Array.from({ length: 6 }, (_, i) => `f${i}@^1.0.0:\n  version "1.0.0"\n  resolved "https://registry.yarnpkg.com/f${i}/-/f${i}-1.0.0.tgz"\n`).join('\n');
+  const kern = (url) => `kern-lib@^1.0.0:\n  version "1.0.0"\n  resolved "${url}"\n`;
+  const y = lockAenderung(einheitlicherDiff(kern('https://registry.yarnpkg.com/kern-lib/-/kern-lib-1.0.0.tgz') + '\n' + fueller, fueller + '\n' + kern('https://pakete.boese.example/k.tgz')), 'yarn');
+  const kp = y.paare.find((x) => x.name === 'kern-lib' && x.nachher);
+  assert.ok(kp.vorher, 'verschobener Eintrag hat sein Gegenstück');
+  // yarn v1 mit Schlüssel in Anführungszeichen
+  const q = lockAenderung('@@ -1,3 +1,3 @@\n kern-lib@^1.0.0:\n   version "1.0.0"\n-  "resolved" "https://registry.yarnpkg.com/kern-lib/-/kern-lib-1.0.0.tgz"\n+  "resolved" "https://pakete.boese.example/k.tgz"', 'yarn');
+  assert.equal(quelle(q.paare[0].nachher.resolved).host, 'pakete.boese.example');
+  assert.equal(lockAenderung('@@ -1,2 +1,2 @@\n {\n-  "lockfileVersion": 1,\n+  "lockfileVersion": 3,', 'npm').formatWechsel, true);
+  assert.equal(lockAenderung('@@ -1,3 +1,3 @@\n __metadata:\n   version: 8\n-  cacheKey: 10\n+  cacheKey: 10c0', 'yarn').cacheWechsel, true);
 });

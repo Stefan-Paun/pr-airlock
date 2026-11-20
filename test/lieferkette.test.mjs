@@ -195,12 +195,14 @@ test('Nicht prüfbar: Lockfile ohne Diff oder ohne Paketkopf im Kontext → Hinw
   const ohne = { filename: 'yarn.lock', status: 'modified', additions: 5000, deletions: 4000, sha: 'a'.repeat(40) };
   const r = await pruefeDateien([ohne]);
   assert.equal(lk(r.befunde).length, 0);
-  assert.ok(r.hinweise.some((h) => /yarn\.lock nicht prüfbar – kein Diff/.test(h)));
+  const u = finde(r, 'pruefung/unvollstaendig');
+  assert.equal(u?.stufe, 'warn', 'fail-closed: nicht prüfbar ist ein Befund');
+  assert.match(u.warum, /Lieferkette nicht prüfbar: kein Diff/);
   const kopflos = { filename: 'package-lock.json', status: 'modified', additions: 1, deletions: 1, sha: 'b'.repeat(40),
     patch: '@@ -40,3 +40,3 @@\n       "version": "1.2.0",\n-      "resolved": "https://registry.npmjs.org/kern-lib/-/kern-lib-1.2.0.tgz",\n+      "resolved": "https://pakete.boese.example/kern-lib-1.2.0.tgz",\n       "integrity": "sha512-x"' };
   const k = await pruefeDateien([kopflos]);
   assert.equal(finde(k, 'lieferkette/quelle-gewechselt'), undefined);
-  assert.ok(k.hinweise.some((h) => /package-lock\.json nicht prüfbar – 2 geänderte Zeile/.test(h)));
+  assert.match(finde(k, 'pruefung/unvollstaendig')?.warum || '', /Lieferkette nicht prüfbar: 2 geänderte Zeile/);
 });
 
 test('Kopf-Stand aus dem Blob: Abschnitt außerhalb des Kontexts wird trotzdem erkannt', async () => {
@@ -210,18 +212,18 @@ test('Kopf-Stand aus dem Blob: Abschnitt außerhalb des Kontexts wird trotzdem e
   const d = aenderung('package.json', alt, neu);
   const ohneBlob = await pruefeDateien([d]);
   assert.equal(finde(ohneBlob, 'lieferkette/direkt-von-git-oder-url'), undefined);
-  assert.ok(ohneBlob.hinweise.some((h) => /package\.json nicht prüfbar/.test(h)));
+  assert.equal(finde(ohneBlob, 'pruefung/unvollstaendig')?.stufe, 'warn');
   let geladen = 0;
   const mitBlob = await pruefeDateien([d], { ladeBytes: async () => { geladen++; return Buffer.from(neu); } });
   assert.equal(geladen, 1);
   assert.equal(finde(mitBlob, 'lieferkette/direkt-von-git-oder-url')?.stufe, 'warn');
-  assert.deepEqual(mitBlob.hinweise, []);
+  assert.equal(finde(mitBlob, 'pruefung/unvollstaendig'), undefined);
   // Blob passt nicht zum Patch → Rückfall, kein Absturz
   const falsch = await pruefeDateien([d], { ladeBytes: async () => Buffer.from('{"kaputt": ') });
   assert.equal(finde(falsch, 'lieferkette/direkt-von-git-oder-url'), undefined);
   const wirft = await pruefeDateien([d], { ladeBytes: async () => { throw new Error('weg'); } });
   assert.ok(Array.isArray(wirft.befunde));
-  assert.equal(wirft.befunde.filter((b) => b.regel === 'pruefung/unvollstaendig').length, 0, 'Manifest-Blob ist optional');
+  assert.ok(!wirft.befunde.some((b) => b.regel === 'pruefung/unvollstaendig' && /Blob|ladbar/.test(b.warum)), 'Manifest-Blob ist optional');
 });
 
 test('Scan: nur registry-umgebogen gilt; node_modules und gelöschte Dateien werden übersprungen', async () => {
@@ -236,4 +238,43 @@ test('Scan: nur registry-umgebogen gilt; node_modules und gelöschte Dateien wer
   assert.equal(lk(nm.befunde).length, 0);
   const weg = await pruefeDateien([{ ...datei('.npmrc', ['strict-ssl=false']), status: 'removed' }]);
   assert.equal(lk(weg.befunde).length, 0);
+});
+
+test('Review: Umgehungen über Abschnitte, overrides, scp-git, Anführungszeichen, Flow-Form; Token im Pfad', async () => {
+  const ziel = 'git+https://code.boese.example/kern.git';
+  for (const [name, neu] of [
+    ['optionalDependencies überschreibt dependencies', manifest({ 'kern-lib': '^1.2.0' }, { optionalDependencies: { 'kern-lib': ziel } })],
+    ['overrides', manifest({ 'kern-lib': '^1.2.0' }, { overrides: { 'kern-lib': ziel } })],
+    ['pnpm.overrides', manifest({ 'kern-lib': '^1.2.0' }, { pnpm: { overrides: { 'kern-lib': ziel } } })],
+    ['scp-Form', manifest({ 'kern-lib': 'git@code.boese.example:nutzer/kern.git' })],
+  ]) {
+    const d = aenderung('package.json', manifest({ 'kern-lib': '^1.2.0' }), neu);
+    const r = await pruefeDateien([d], { ladeBytes: async () => Buffer.from(d.kopf) });
+    assert.equal(finde(r, 'lieferkette/direkt-von-git-oder-url')?.stufe, 'warn', name);
+  }
+  const geheim = ['TOKEN', 'IM', 'PFAD', '42'].join('');
+  for (const [pfad, zeile, stufe] of [
+    ['.npmrc', '"registry" = https://pakete.boese.example/', 'block'],
+    ['.npmrc', `registry=https://npm.boese.example/${geheim}/team/`, 'block'],
+    ['.yarnrc.yml', '"npmRegistryServer": "https://pakete.boese.example"', 'block'],
+    ['.yarnrc.yml', 'npmScopes: {firma: {npmRegistryServer: "https://pakete.boese.example"}}', 'block'],
+    ['.yarnrc.yml', '"enableStrictSsl": false', 'block'],
+    ['.yarnrc', '"strict-ssl" "false"', 'block'],
+  ]) {
+    const r = await pruefeDateien([datei(pfad, [zeile])]);
+    assert.equal(finde(r, 'lieferkette/registry-umgebogen')?.stufe, stufe, zeile);
+    assert.ok(!JSON.stringify(r).includes(geheim), `Pfad-Token im Ergebnis: ${zeile}`);
+  }
+});
+
+test('Review: Yarn-Berry-Upgrade (cacheKey) und Lockfile-v1-Migration sind kein Alarm', async () => {
+  const berry = (key, sum) => `__metadata:\n  version: 8\n  cacheKey: ${key}\n\n"kern-lib@npm:^1.0.0":\n  version: 1.0.0\n  resolution: "kern-lib@npm:1.0.0"\n  checksum: ${sum}\n  languageName: node\n  linkType: hard\n`;
+  const r = await pruefeDateien([aenderung('yarn.lock', berry('10', 'aaaa1111'), berry('10c0', '10c0/bbbb2222')), aenderung('package.json', manifest({}), manifest({ x: '1' }))]);
+  assert.equal(lk(r.befunde).filter((b) => b.stufe !== 'info').length, 0, JSON.stringify(lk(r.befunde)));
+  const gleich = await pruefeDateien([aenderung('yarn.lock', berry('10c0', '10c0/aaaa1111'), berry('10c0', '10c0/bbbb2222'))]);
+  assert.equal(finde(gleich, 'lieferkette/quelle-gewechselt')?.stufe, 'block', 'ohne cacheKey-Wechsel bleibt es ein Befund');
+  const v1 = json({ name: 'beispiel-app', lockfileVersion: 1, requires: true, dependencies: { 'kern-lib': { version: '1.2.0', resolved: reg('kern-lib', '1.2.0'), integrity: integ('A') } } });
+  const v3 = npmLock(eintrag('kern-lib', '1.2.0', 'A', { hasInstallScript: true }));
+  const m = await pruefeDateien([aenderung('package-lock.json', v1, v3), aenderung('package.json', manifest({}), manifest({ x: '1' }))]);
+  assert.equal(lk(m.befunde).filter((b) => b.stufe !== 'info').length, 0, JSON.stringify(lk(m.befunde)));
 });

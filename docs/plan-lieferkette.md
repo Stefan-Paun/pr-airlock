@@ -29,5 +29,6 @@ Alle drei Etappen sind umgesetzt (`test/lieferkette-leser.test.mjs`, `test/liefe
 
 Entscheidungen:
 - Das eigene Manifest-Install-Skript (Teil 4 des Issues) war schon auf main als `autostart/npm-lifecycle`; `lieferkette/install-skript` deckt nur das Lockfile ab, damit es keine Doppelbefunde gibt.
-- „Nicht prüfbar“ ist ein Hinweis im Bericht, kein Befund: Er soll nicht blocken, aber sichtbar sein.
+- „Nicht prüfbar“ ist ein Befund `pruefung/unvollstaendig` (warn), fail-closed wie der Rest; er blockt mit dem Standard-`failOn` nicht, ist aber sichtbar.
+- Nach dem Review: Paare über alle Hunks einer Datei, Lockfile v1 und einzeilige npm-Einträge, pnpm-Tarball-/git-Schlüssel, Abschnitte einzeln (optionalDependencies verdeckt nichts), overrides/resolutions, scp-git-Form, Anführungszeichen und Flow-Form in .npmrc/.yarnrc*, Registry-Auszug nur mit Host, Berry-cacheKey- und lockfileVersion-Wechsel ohne Fehlalarm, ReDoS-feste Feld-Regex.
 - Namensnähe absichtlich eng (kein Zeichen am Ende, nicht am ersten Zeichen ersetzt, `@types/*` ausgenommen), damit `vue`/`vuex` oder `react`/`@testing-library/react` nicht anschlagen.
