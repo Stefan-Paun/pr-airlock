@@ -164,7 +164,7 @@ test('scan: findet dieselben Befunde wie der API-Weg, ohne node_modules und ohne
     assert.ok(r.befunde.some((b) => b.regel === 'tarnung/magic-bytes' && b.datei === 'font.woff2'));
     assert.ok(!r.befunde.some((b) => /node_modules|ignoriert/.test(b.datei)));
     assert.ok(!r.befunde.some((b) => b.regel === 'projekt/neues-skript-im-root'));
-    assert.deepEqual(r.meta.nichtAnwendbar.map((x) => x.id), ['projekt/workflow-aus-fork', 'projekt/neues-skript-im-root']);
+    assert.deepEqual(r.meta.nichtAnwendbar.map((x) => x.id), ['projekt/workflow-aus-fork', 'projekt/neues-skript-im-root', 'lieferkette/lock-ohne-manifest', 'lieferkette/quelle-gewechselt', 'lieferkette/direkt-von-git-oder-url', 'lieferkette/install-skript', 'lieferkette/namensnaehe']);
     assert.ok(r.meta.hinweise.some((h) => /node_modules/.test(h)));
     assert.match(toConsole(r, { farben: false }), /nicht anwendbar im Scan: projekt\/workflow-aus-fork/);
     assert.match(toMarkdown(r), /Nicht anwendbar im Scan/);

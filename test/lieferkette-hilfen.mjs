@@ -41,12 +41,12 @@ export function einheitlicherDiff(altText, neuText, kontext = 3) {
   return out.join('\n');
 }
 
-/** Datei im API-Format aus Vorher/Nachher; `alt === null` heißt neu hinzugefügt. */
+/** Datei im API-Format aus Vorher/Nachher; `alt === null` heißt neu hinzugefügt. `kopf` (nicht Teil der API) ist der Nachher-Text für Blob-Tests. */
 export function aenderung(filename, alt, neu, extra = {}) {
   const patch = einheitlicherDiff(alt ?? '', neu);
   const add = patch.split('\n').filter((z) => z.startsWith('+')).length;
   const del = patch.split('\n').filter((z) => z.startsWith('-')).length;
-  return { filename, status: alt == null ? 'added' : 'modified', additions: add, deletions: del, changes: add + del, patch, sha: 'c'.repeat(40), ...extra };
+  return { filename, status: alt == null ? 'added' : 'modified', additions: add, deletions: del, changes: add + del, patch, sha: 'c'.repeat(40), kopf: neu, ...extra };
 }
 
 export const json = (o) => JSON.stringify(o, null, 2);
