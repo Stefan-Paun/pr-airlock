@@ -1,0 +1,22 @@
+{
+  "kennung": "marker-v3-tag",
+  "art": "boese",
+  "warum": "Versions-Tag global.i='A…' der dritten Variante in einer Konfig-Datei.",
+  "erwartet": [
+    {
+      "regel": "marker/polinrider-v3-tag",
+      "stufe": "block"
+    },
+    {
+      "regel": "anhang/global-tag",
+      "stufe": "block"
+    }
+  ],
+  "dateien": [
+    {
+      "pfad": "next.config.js",
+      "status": "modified",
+      "diff": "1.diff"
+    }
+  ]
+}

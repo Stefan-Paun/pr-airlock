@@ -1,0 +1,13 @@
+{
+  "kennung": "hardhat-config",
+  "art": "gut",
+  "warum": "Normale hardhat.config.js.",
+  "erwartet": [],
+  "dateien": [
+    {
+      "pfad": "hardhat.config.js",
+      "status": "added",
+      "diff": "1.diff"
+    }
+  ]
+}

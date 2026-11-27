@@ -1,0 +1,18 @@
+{
+  "kennung": "vscode-task-folderopen",
+  "art": "boese",
+  "warum": "VS-Code-Task startet beim Öffnen des Ordners ein Shell-Kommando (TasksJacker-Form).",
+  "erwartet": [
+    {
+      "regel": "autostart/vscode-task",
+      "stufe": "block"
+    }
+  ],
+  "dateien": [
+    {
+      "pfad": ".vscode/tasks.json",
+      "status": "added",
+      "diff": "1.diff"
+    }
+  ]
+}

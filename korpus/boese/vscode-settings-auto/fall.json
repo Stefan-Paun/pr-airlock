@@ -1,0 +1,18 @@
+{
+  "kennung": "vscode-settings-auto",
+  "art": "boese",
+  "warum": "Workspace-Einstellung schaltet automatische Tasks frei.",
+  "erwartet": [
+    {
+      "regel": "autostart/vscode-settings",
+      "stufe": "warn"
+    }
+  ],
+  "dateien": [
+    {
+      "pfad": ".vscode/settings.json",
+      "status": "modified",
+      "diff": "1.diff"
+    }
+  ]
+}

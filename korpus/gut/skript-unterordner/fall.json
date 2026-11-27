@@ -1,0 +1,13 @@
+{
+  "kennung": "skript-unterordner",
+  "art": "gut",
+  "warum": "Neues Shell-Skript in scripts/, nicht im Projektstamm.",
+  "erwartet": [],
+  "dateien": [
+    {
+      "pfad": "scripts/release.sh",
+      "status": "added",
+      "diff": "1.diff"
+    }
+  ]
+}

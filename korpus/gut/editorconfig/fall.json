@@ -1,0 +1,13 @@
+{
+  "kennung": "editorconfig",
+  "art": "gut",
+  "warum": "Neue .editorconfig.",
+  "erwartet": [],
+  "dateien": [
+    {
+      "pfad": ".editorconfig",
+      "status": "added",
+      "diff": "1.diff"
+    }
+  ]
+}

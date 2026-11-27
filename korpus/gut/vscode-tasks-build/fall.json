@@ -1,0 +1,13 @@
+{
+  "kennung": "vscode-tasks-build",
+  "art": "gut",
+  "warum": "Normaler Build-Task in .vscode/tasks.json ohne Autostart.",
+  "erwartet": [],
+  "dateien": [
+    {
+      "pfad": ".vscode/tasks.json",
+      "status": "added",
+      "diff": "1.diff"
+    }
+  ]
+}

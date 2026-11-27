@@ -1,0 +1,13 @@
+{
+  "kennung": "gulpfile",
+  "art": "gut",
+  "warum": "Normaler gulpfile.js.",
+  "erwartet": [],
+  "dateien": [
+    {
+      "pfad": "gulpfile.js",
+      "status": "modified",
+      "diff": "1.diff"
+    }
+  ]
+}

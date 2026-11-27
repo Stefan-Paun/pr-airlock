@@ -1,0 +1,6 @@
+@@ -40,3 +40,3 @@
+ kern-lib@^2.4.0:
+-  version "2.4.0"
+-  resolved "https://registry.yarnpkg.example/kern-lib/-/kern-lib-2.4.0.tgz#b5f46d31066c5727c18c3e378242b0e627e43ef2"
++  version "2.4.1"
++  resolved "https://registry.yarnpkg.example/kern-lib/-/kern-lib-2.4.1.tgz#12f182f2480c07dd488804607a6f8f9b1a36e9af"

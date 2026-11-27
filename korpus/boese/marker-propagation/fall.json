@@ -1,0 +1,18 @@
+{
+  "kennung": "marker-propagation",
+  "art": "boese",
+  "warum": "Verbreitungsskript liest die letzte Commit-Nachricht für amend und force-push.",
+  "erwartet": [
+    {
+      "regel": "marker/polinrider-propagation",
+      "stufe": "block"
+    }
+  ],
+  "dateien": [
+    {
+      "pfad": "scripts/sync.bat",
+      "status": "modified",
+      "diff": "1.diff"
+    }
+  ]
+}

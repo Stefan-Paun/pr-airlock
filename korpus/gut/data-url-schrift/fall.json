@@ -1,0 +1,20 @@
+{
+  "kennung": "data-url-schrift",
+  "art": "gut",
+  "warum": "Eingebettete Schrift als Data-URL in einer JS-Datei (z. B. für ein Canvas-Spiel).",
+  "erwartet": [],
+  "bekannt": [
+    {
+      "art": "fehlalarm",
+      "regel": "tarnung/base64-block",
+      "grund": "Die Regel nimmt nur data:image/ aus. Eine eingebettete Schrift sieht für sie aus wie ein verpackter Payload; nur warn."
+    }
+  ],
+  "dateien": [
+    {
+      "pfad": "src/schrift.js",
+      "status": "added",
+      "diff": "1.diff"
+    }
+  ]
+}

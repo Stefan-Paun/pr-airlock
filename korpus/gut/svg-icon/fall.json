@@ -1,0 +1,13 @@
+{
+  "kennung": "svg-icon",
+  "art": "gut",
+  "warum": "SVG-Icon mit langem Pfad.",
+  "erwartet": [],
+  "dateien": [
+    {
+      "pfad": "public/icon.svg",
+      "status": "added",
+      "diff": "1.diff"
+    }
+  ]
+}

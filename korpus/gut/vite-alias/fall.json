@@ -1,0 +1,13 @@
+{
+  "kennung": "vite-alias",
+  "art": "gut",
+  "warum": "Pfad-Alias in vite.config.ts.",
+  "erwartet": [],
+  "dateien": [
+    {
+      "pfad": "vite.config.ts",
+      "status": "modified",
+      "diff": "1.diff"
+    }
+  ]
+}

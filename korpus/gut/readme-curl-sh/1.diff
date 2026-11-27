@@ -1,0 +1,6 @@
+@@ -20,2 +20,5 @@
+ ## Installation
+ 
++```sh
++curl -fsSL https://werkzeug.example/install.sh | sh
++```

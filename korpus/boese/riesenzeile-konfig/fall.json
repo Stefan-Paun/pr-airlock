@@ -1,0 +1,18 @@
+{
+  "kennung": "riesenzeile-konfig",
+  "art": "boese",
+  "warum": "Eine Zeile mit über 2000 Zeichen, hoher Entropie und zwei Ausführungs-Token in einer Konfig-Datei.",
+  "erwartet": [
+    {
+      "regel": "anhang/riesenzeile",
+      "stufe": "block"
+    }
+  ],
+  "dateien": [
+    {
+      "pfad": "webpack.config.js",
+      "status": "modified",
+      "diff": "1.diff"
+    }
+  ]
+}

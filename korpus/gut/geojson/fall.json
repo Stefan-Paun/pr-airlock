@@ -1,0 +1,13 @@
+{
+  "kennung": "geojson",
+  "art": "gut",
+  "warum": "GeoJSON mit vielen Koordinaten in einer Zeile.",
+  "erwartet": [],
+  "dateien": [
+    {
+      "pfad": "src/data/route.json",
+      "status": "added",
+      "diff": "1.diff"
+    }
+  ]
+}

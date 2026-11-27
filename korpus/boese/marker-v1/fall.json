@@ -1,0 +1,22 @@
+{
+  "kennung": "marker-v1",
+  "art": "boese",
+  "warum": "Marker und Shuffle-Seed der ersten Variante (Literal aus dem OSM-Dossier).",
+  "erwartet": [
+    {
+      "regel": "marker/polinrider-v1",
+      "stufe": "block"
+    },
+    {
+      "regel": "marker/polinrider-v1-seed",
+      "stufe": "block"
+    }
+  ],
+  "dateien": [
+    {
+      "pfad": "tailwind.config.ts",
+      "status": "modified",
+      "diff": "1.diff"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "kennung": "changelog",
+  "art": "gut",
+  "warum": "CHANGELOG mit langen Absätzen.",
+  "erwartet": [],
+  "dateien": [
+    {
+      "pfad": "CHANGELOG.md",
+      "status": "modified",
+      "diff": "1.diff"
+    }
+  ]
+}

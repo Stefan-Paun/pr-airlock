@@ -1,0 +1,13 @@
+{
+  "kennung": "vscode-extensions",
+  "art": "gut",
+  "warum": "Empfohlene Erweiterungen.",
+  "erwartet": [],
+  "dateien": [
+    {
+      "pfad": ".vscode/extensions.json",
+      "status": "added",
+      "diff": "1.diff"
+    }
+  ]
+}

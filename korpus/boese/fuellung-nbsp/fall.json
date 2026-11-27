@@ -1,0 +1,18 @@
+{
+  "kennung": "fuellung-nbsp",
+  "art": "boese",
+  "warum": "Füllung aus geschützten Leerzeichen (U+00A0), die ein einfaches grep nach Leerzeichen übersieht.",
+  "erwartet": [
+    {
+      "regel": "anhang/fuellung",
+      "stufe": "block"
+    }
+  ],
+  "dateien": [
+    {
+      "pfad": "vite.config.ts",
+      "status": "modified",
+      "diff": "1.diff"
+    }
+  ]
+}

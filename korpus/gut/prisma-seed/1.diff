@@ -1,0 +1,5 @@
+@@ -0,0 +1,4 @@
++import { PrismaClient } from '@prisma/client';
++const prisma = new PrismaClient();
++await prisma.user.create({ data: { name: 'Test' } });
++await prisma.$disconnect();

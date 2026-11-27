@@ -1,0 +1,18 @@
+{
+  "kennung": "npm-postinstall",
+  "art": "boese",
+  "warum": "Neues postinstall-Skript, das bei jedem Install läuft.",
+  "erwartet": [
+    {
+      "regel": "autostart/npm-lifecycle",
+      "stufe": "warn"
+    }
+  ],
+  "dateien": [
+    {
+      "pfad": "package.json",
+      "status": "modified",
+      "diff": "1.diff"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "kennung": "python-skript",
+  "art": "gut",
+  "warum": "Python-Hilfsskript mit normalem Code.",
+  "erwartet": [],
+  "dateien": [
+    {
+      "pfad": "tools/statistik.py",
+      "status": "added",
+      "diff": "1.diff"
+    }
+  ]
+}

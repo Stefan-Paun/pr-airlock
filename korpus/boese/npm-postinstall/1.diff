@@ -1,0 +1,5 @@
+@@ -5,3 +5,4 @@
+   "scripts": {
+     "build": "vite build",
++    "postinstall": "node scripts/platzhalter.js",
+     "test": "vitest"

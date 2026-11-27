@@ -1,0 +1,13 @@
+{
+  "kennung": "i18n-mehrzeilig",
+  "art": "gut",
+  "warum": "Neue Übersetzungen in einer formatierten JSON-Datei.",
+  "erwartet": [],
+  "dateien": [
+    {
+      "pfad": "src/i18n/en.json",
+      "status": "modified",
+      "diff": "1.diff"
+    }
+  ]
+}

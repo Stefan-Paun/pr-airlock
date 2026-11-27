@@ -1,0 +1,16 @@
+{
+  "kennung": "umbenennung",
+  "art": "gut",
+  "warum": "Reine Umbenennung einer Quelldatei ohne Inhaltsänderung.",
+  "erwartet": [],
+  "dateien": [
+    {
+      "pfad": "src/hilfe/format.js",
+      "status": "renamed",
+      "previous_filename": "src/format.js",
+      "ohneInhalt": true,
+      "additions": 0,
+      "changes": 0
+    }
+  ]
+}

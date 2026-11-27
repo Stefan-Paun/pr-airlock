@@ -1,0 +1,18 @@
+{
+  "kennung": "workflow-pwn-request",
+  "art": "boese",
+  "warum": "pull_request_target plus Checkout des PR-Heads: fremder Code mit Repo-Rechten.",
+  "erwartet": [
+    {
+      "regel": "projekt/workflow-pwn-request",
+      "stufe": "block"
+    }
+  ],
+  "dateien": [
+    {
+      "pfad": ".github/workflows/vorschau.yml",
+      "status": "added",
+      "diff": "1.diff"
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "kennung": "marker-config-bat",
+  "art": "boese",
+  "warum": "config.bat (Orchestrator-Name der Kampagne) in einem Unterordner.",
+  "erwartet": [
+    {
+      "regel": "marker/polinrider-bat",
+      "stufe": "block"
+    }
+  ],
+  "dateien": [
+    {
+      "pfad": "tools/config.bat",
+      "status": "added",
+      "diff": "1.diff"
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "kennung": "vscode-tasks-watch-folderopen",
+  "art": "gut",
+  "warum": "Watch-Task mit runOn: folderOpen, wie manche Projekte ihn wirklich nutzen.",
+  "erwartet": [],
+  "bekannt": [
+    {
+      "art": "fehlalarm",
+      "regel": "autostart/vscode-task",
+      "grund": "Ein npm-Watch-Task mit folderOpen hat kein command-Feld; die Regel warnt trotzdem, weil sie nicht prüft, was hinter dem npm-Skript steht. Nur warn."
+    }
+  ],
+  "dateien": [
+    {
+      "pfad": ".vscode/tasks.json",
+      "status": "added",
+      "diff": "1.diff"
+    }
+  ]
+}

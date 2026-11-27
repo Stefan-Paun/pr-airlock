@@ -1,0 +1,13 @@
+{
+  "kennung": "lockfile-npm",
+  "art": "gut",
+  "warum": "Versionssprung in package-lock.json, wie ihn Dependabot erzeugt.",
+  "erwartet": [],
+  "dateien": [
+    {
+      "pfad": "package-lock.json",
+      "status": "modified",
+      "diff": "1.diff"
+    }
+  ]
+}

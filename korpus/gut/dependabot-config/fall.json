@@ -1,0 +1,13 @@
+{
+  "kennung": "dependabot-config",
+  "art": "gut",
+  "warum": "Neue .github/dependabot.yml aus dem eigenen Repo.",
+  "erwartet": [],
+  "dateien": [
+    {
+      "pfad": ".github/dependabot.yml",
+      "status": "added",
+      "diff": "1.diff"
+    }
+  ]
+}

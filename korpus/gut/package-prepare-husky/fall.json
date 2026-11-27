@@ -1,0 +1,20 @@
+{
+  "kennung": "package-prepare-husky",
+  "art": "gut",
+  "warum": "prepare: husky, die übliche Einrichtung von Git-Hooks.",
+  "erwartet": [],
+  "bekannt": [
+    {
+      "art": "fehlalarm",
+      "regel": "autostart/npm-lifecycle",
+      "grund": "Die Regel warnt bewusst bei jedem neuen install/prepare-Skript, weil es bei jedem Install läuft; „husky“ ist harmlos, aber eine Liste harmloser Werte wäre leicht zu missbrauchen. Nur warn, blockt mit dem Standard nicht."
+    }
+  ],
+  "dateien": [
+    {
+      "pfad": "package.json",
+      "status": "modified",
+      "diff": "1.diff"
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "kennung": "pipe-to-shell-bash",
+  "art": "boese",
+  "warum": "Ein Hilfsskript lädt ein Installationsskript und pipt es in bash.",
+  "erwartet": [
+    {
+      "regel": "autostart/pipe-to-shell",
+      "stufe": "warn"
+    }
+  ],
+  "dateien": [
+    {
+      "pfad": "scripts/bootstrap.sh",
+      "status": "modified",
+      "diff": "1.diff"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "kennung": "webpack-loader",
+  "art": "gut",
+  "warum": "Neuer Loader in webpack.config.js.",
+  "erwartet": [],
+  "dateien": [
+    {
+      "pfad": "webpack.config.js",
+      "status": "modified",
+      "diff": "1.diff"
+    }
+  ]
+}

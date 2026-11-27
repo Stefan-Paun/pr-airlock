@@ -1,0 +1,18 @@
+{
+  "kennung": "global-tag-setup",
+  "art": "boese",
+  "warum": "Versions-Tag global.o='5-3-235-du' in einem Test-Setup; ohne Konfig-Datei und Token nur warn.",
+  "erwartet": [
+    {
+      "regel": "anhang/global-tag",
+      "stufe": "warn"
+    }
+  ],
+  "dateien": [
+    {
+      "pfad": "test/setup.js",
+      "status": "modified",
+      "diff": "1.diff"
+    }
+  ]
+}

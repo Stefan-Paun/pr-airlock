@@ -1,0 +1,13 @@
+{
+  "kennung": "fixture-postcss",
+  "art": "gut",
+  "warum": "Echte, unveränderte PostCSS-Konfiguration (vorhandenes Test-Fixture).",
+  "erwartet": [],
+  "dateien": [
+    {
+      "pfad": "postcss.config.mjs",
+      "status": "added",
+      "fixture": "legit-postcss.config.mjs.txt"
+    }
+  ]
+}

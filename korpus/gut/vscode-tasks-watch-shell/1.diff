@@ -1,0 +1,12 @@
+@@ -0,0 +1,11 @@
++{
++  "version": "2.0.0",
++  "tasks": [
++    {
++      "label": "tsc watch",
++      "type": "shell",
++      "command": "npx tsc --watch",
++      "runOptions": { "runOn": "folderOpen" }
++    }
++  ]
++}

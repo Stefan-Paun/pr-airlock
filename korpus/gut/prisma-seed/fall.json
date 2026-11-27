@@ -1,0 +1,13 @@
+{
+  "kennung": "prisma-seed",
+  "art": "gut",
+  "warum": "Normales Seed-Skript (Dateiname, den die Kampagne gern nutzt).",
+  "erwartet": [],
+  "dateien": [
+    {
+      "pfad": "prisma/seed.ts",
+      "status": "added",
+      "diff": "1.diff"
+    }
+  ]
+}

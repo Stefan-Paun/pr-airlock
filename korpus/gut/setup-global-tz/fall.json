@@ -1,0 +1,13 @@
+{
+  "kennung": "setup-global-tz",
+  "art": "gut",
+  "warum": "global.TZ = 'UTC' im Test-Setup.",
+  "erwartet": [],
+  "dateien": [
+    {
+      "pfad": "test/setup.js",
+      "status": "modified",
+      "diff": "1.diff"
+    }
+  ]
+}

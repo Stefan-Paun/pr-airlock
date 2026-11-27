@@ -1,0 +1,13 @@
+{
+  "kennung": "html-inline-svg",
+  "art": "gut",
+  "warum": "HTML mit langem Inline-SVG-Pfad.",
+  "erwartet": [],
+  "dateien": [
+    {
+      "pfad": "public/start.html",
+      "status": "modified",
+      "diff": "1.diff"
+    }
+  ]
+}

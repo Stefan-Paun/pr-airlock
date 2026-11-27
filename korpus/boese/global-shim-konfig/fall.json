@@ -1,0 +1,18 @@
+{
+  "kennung": "global-shim-konfig",
+  "art": "boese",
+  "warum": "Der CommonJS-Rückweg global[...]=require in einer ESM-Konfig-Datei.",
+  "erwartet": [
+    {
+      "regel": "anhang/global-tag",
+      "stufe": "block"
+    }
+  ],
+  "dateien": [
+    {
+      "pfad": "vite.config.mjs",
+      "status": "modified",
+      "diff": "1.diff"
+    }
+  ]
+}

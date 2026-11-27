@@ -1,0 +1,36 @@
+{
+  "kennung": "kombiniert-font-konfig-gitignore",
+  "art": "boese",
+  "warum": "Ein PR mit drei Bausteinen der Kampagne: Füllung in der Konfig, getarnte Schrift, .gitignore-Versteck.",
+  "erwartet": [
+    {
+      "regel": "anhang/fuellung",
+      "stufe": "block"
+    },
+    {
+      "regel": "tarnung/magic-bytes",
+      "stufe": "block"
+    },
+    {
+      "regel": "projekt/gitignore-versteck",
+      "stufe": "warn"
+    }
+  ],
+  "dateien": [
+    {
+      "pfad": "postcss.config.mjs",
+      "status": "modified",
+      "diff": "1.diff"
+    },
+    {
+      "pfad": "public/fonts/fa-brands-400.woff2",
+      "status": "added",
+      "inhalt": "2.txt"
+    },
+    {
+      "pfad": ".gitignore",
+      "status": "modified",
+      "diff": "3.diff"
+    }
+  ]
+}

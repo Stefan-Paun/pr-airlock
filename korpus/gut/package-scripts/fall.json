@@ -1,0 +1,13 @@
+{
+  "kennung": "package-scripts",
+  "art": "gut",
+  "warum": "Neue npm-Skripte ohne Lifecycle-Haken.",
+  "erwartet": [],
+  "dateien": [
+    {
+      "pfad": "package.json",
+      "status": "modified",
+      "diff": "1.diff"
+    }
+  ]
+}

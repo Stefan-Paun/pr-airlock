@@ -1,0 +1,18 @@
+{
+  "kennung": "idea-startup",
+  "art": "boese",
+  "warum": "JetBrains-Konfiguration mit Start beim Öffnen.",
+  "erwartet": [
+    {
+      "regel": "autostart/idea",
+      "stufe": "warn"
+    }
+  ],
+  "dateien": [
+    {
+      "pfad": ".idea/workspace.xml",
+      "status": "modified",
+      "diff": "1.diff"
+    }
+  ]
+}

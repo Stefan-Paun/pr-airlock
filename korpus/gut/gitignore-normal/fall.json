@@ -1,0 +1,13 @@
+{
+  "kennung": "gitignore-normal",
+  "art": "gut",
+  "warum": "Übliche .gitignore-Einträge.",
+  "erwartet": [],
+  "dateien": [
+    {
+      "pfad": ".gitignore",
+      "status": "modified",
+      "diff": "1.diff"
+    }
+  ]
+}

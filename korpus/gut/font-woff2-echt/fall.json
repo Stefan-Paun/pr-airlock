@@ -1,0 +1,13 @@
+{
+  "kennung": "font-woff2-echt",
+  "art": "gut",
+  "warum": "Echte woff2-Schrift (korrekter Dateikopf).",
+  "erwartet": [],
+  "dateien": [
+    {
+      "pfad": "public/fonts/inter.woff2",
+      "status": "added",
+      "hex": "774f46320001000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+    }
+  ]
+}

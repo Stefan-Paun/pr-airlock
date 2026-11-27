@@ -1,0 +1,18 @@
+{
+  "kennung": "marker-staking-uuid",
+  "art": "boese",
+  "warum": "UUID des bewaffneten StakingGame-Templates.",
+  "erwartet": [
+    {
+      "regel": "marker/polinrider-staking-uuid",
+      "stufe": "block"
+    }
+  ],
+  "dateien": [
+    {
+      "pfad": "contracts/vorlage.js",
+      "status": "modified",
+      "diff": "1.diff"
+    }
+  ]
+}

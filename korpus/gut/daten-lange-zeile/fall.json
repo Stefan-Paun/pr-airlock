@@ -1,0 +1,13 @@
+{
+  "kennung": "daten-lange-zeile",
+  "art": "gut",
+  "warum": "Lange Datenzeile mit Städtenamen in einer Quelldatei.",
+  "erwartet": [],
+  "dateien": [
+    {
+      "pfad": "src/data/staedte.js",
+      "status": "added",
+      "diff": "1.diff"
+    }
+  ]
+}

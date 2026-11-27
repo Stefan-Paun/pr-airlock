@@ -1,0 +1,18 @@
+{
+  "kennung": "pipe-to-shell-iex",
+  "art": "boese",
+  "warum": "PowerShell-Form: Download direkt in iex.",
+  "erwartet": [
+    {
+      "regel": "autostart/pipe-to-shell",
+      "stufe": "warn"
+    }
+  ],
+  "dateien": [
+    {
+      "pfad": "scripts/setup.ps1",
+      "status": "modified",
+      "diff": "1.diff"
+    }
+  ]
+}

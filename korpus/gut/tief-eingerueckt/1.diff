@@ -1,0 +1,4 @@
+@@ -40,2 +40,3 @@
+                                             if (knoten.kinder) {
++                                                return knoten.kinder.map((k) => k.name).join(", ");
+                                             }

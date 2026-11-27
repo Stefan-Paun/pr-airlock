@@ -1,0 +1,13 @@
+{
+  "kennung": "tailwind-farben",
+  "art": "gut",
+  "warum": "Neue Farben in tailwind.config.js.",
+  "erwartet": [],
+  "dateien": [
+    {
+      "pfad": "tailwind.config.js",
+      "status": "modified",
+      "diff": "1.diff"
+    }
+  ]
+}

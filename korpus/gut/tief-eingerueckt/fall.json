@@ -1,0 +1,13 @@
+{
+  "kennung": "tief-eingerueckt",
+  "art": "gut",
+  "warum": "Tief eingerückter, normaler Code.",
+  "erwartet": [],
+  "dateien": [
+    {
+      "pfad": "src/baum.js",
+      "status": "modified",
+      "diff": "1.diff"
+    }
+  ]
+}

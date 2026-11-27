@@ -1,0 +1,22 @@
+{
+  "kennung": "npm-preinstall-pipe",
+  "art": "boese",
+  "warum": "preinstall lädt ein Skript von einer Beispiel-Domain und pipt es in eine Shell.",
+  "erwartet": [
+    {
+      "regel": "autostart/npm-lifecycle",
+      "stufe": "block"
+    },
+    {
+      "regel": "autostart/pipe-to-shell",
+      "stufe": "warn"
+    }
+  ],
+  "dateien": [
+    {
+      "pfad": "package.json",
+      "status": "modified",
+      "diff": "1.diff"
+    }
+  ]
+}

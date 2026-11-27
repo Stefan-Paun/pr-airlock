@@ -1,0 +1,13 @@
+{
+  "kennung": "tsconfig",
+  "art": "gut",
+  "warum": "Pfade in tsconfig.json.",
+  "erwartet": [],
+  "dateien": [
+    {
+      "pfad": "tsconfig.json",
+      "status": "modified",
+      "diff": "1.diff"
+    }
+  ]
+}

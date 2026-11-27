@@ -1,0 +1,13 @@
+{
+  "kennung": "i18n-einzeilig",
+  "art": "gut",
+  "warum": "Übersetzungsdatei als eine lange JSON-Zeile.",
+  "erwartet": [],
+  "dateien": [
+    {
+      "pfad": "public/locales/de.json",
+      "status": "added",
+      "diff": "1.diff"
+    }
+  ]
+}

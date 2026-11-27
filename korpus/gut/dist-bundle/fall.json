@@ -1,0 +1,13 @@
+{
+  "kennung": "dist-bundle",
+  "art": "gut",
+  "warum": "Gebautes Bundle in dist/: lange Zeilen sind dort normal.",
+  "erwartet": [],
+  "dateien": [
+    {
+      "pfad": "dist/bundle.js",
+      "status": "modified",
+      "diff": "1.diff"
+    }
+  ]
+}

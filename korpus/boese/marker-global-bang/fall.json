@@ -1,0 +1,22 @@
+{
+  "kennung": "marker-global-bang",
+  "art": "boese",
+  "warum": "Injektions-Global global['!'] der ersten Variante.",
+  "erwartet": [
+    {
+      "regel": "marker/polinrider-global-bang",
+      "stufe": "block"
+    },
+    {
+      "regel": "anhang/global-tag",
+      "stufe": "block"
+    }
+  ],
+  "dateien": [
+    {
+      "pfad": "postcss.config.js",
+      "status": "modified",
+      "diff": "1.diff"
+    }
+  ]
+}
