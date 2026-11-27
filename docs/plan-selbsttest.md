@@ -23,3 +23,9 @@ entschärften Korpus laufen und zeigt je Regel Trefferquote und Fehlalarmquote, 
 ## Bewusst nicht dabei
 Echte Payloads, echte bösartige PRs, Netzanfragen, Umbau bestehender Regeln. Gefundene Lücken und Fehlalarme werden
 im Korpus als bekannte Abweichung markiert und im Bericht genannt.
+
+## Stand
+Alle 5 Etappen fertig: 49 böse und 63 gute Fälle, Hygiene-Prüfung, Auswertung, `schleuse selbsttest`,
+`docs/KENNZAHLEN.md` mit Aktualitätstest, README-Abschnitt. Gefunden und als bekannt markiert: eine Lücke
+(Füllung unter 120 Zeichen) und vier Fehlalarme (folderOpen-Watcher zweimal, `prepare: husky`,
+eingebettete Schrift als Base64).

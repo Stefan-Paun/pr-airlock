@@ -34,6 +34,7 @@ Inputs: `fail-on` (`block`, `warn`, `info`; unset means `failOn` from `.schleuse
 node bin/schleuse.mjs pr shadcn-ui/ui#7716          # any PR you can read; token from gh auth token / GITHUB_TOKEN
 node bin/schleuse.mjs files postcss.config.mjs public/fonts/*.woff2
 node bin/schleuse.mjs pr owner/repo#1 --md report.md --sarif report.sarif --fail-on warn
+node bin/schleuse.mjs selbsttest                    # rules against the bundled corpus, see "Self-test" below
 ```
 
 Exit codes: 0 clean or below threshold, 1 findings at or above `--fail-on`, 2 usage or API error. Node 20+, no dependencies.
@@ -118,6 +119,16 @@ A gate that a pull request can reconfigure is no gate. So:
 
 What this does not stop: an exception is trusted once a maintainer has merged it, so an attacker can still put a payload under an excepted path in a later PR. That is why exceptions are narrow by design (rule plus path), visible in every report, and protected rules need a named exception.
 
+## Self-test: hit rate and false alarms per rule
+
+```sh
+node bin/schleuse.mjs selbsttest                      # table per rule, exit 1 on a missed finding or a false alarm
+node bin/schleuse.mjs selbsttest --regel 'anhang/*'   # one rule or family
+node bin/schleuse.mjs selbsttest --format md --datum 2026-11-27 > docs/KENNZAHLEN.md
+```
+
+Every rule runs against a bundled corpus in [`korpus/`](korpus/): one folder per case with a `fall.json` (id, `boese`/`gut`, expected rules, reason) and the diff as a fixture. *Bad* cases reproduce only the **shape** of known attacks (padding, appended block, auto-run entry); the payload is an inert placeholder such as `console.log('platzhalter')`, and a hygiene check in `npm test` rejects execution calls, addresses outside reserved example domains, and Base64 or escape runs that decode to text. *Good* cases are harmless changes that are easy to confuse: minified files, build configs, long data lines, editor tasks, translations, lockfile updates. Rates always come with their counts. Known limits of a rule are marked in the case and listed, not hidden; if one disappears, the self-test fails until the corpus is updated. The current numbers are in [docs/KENNZAHLEN.md](docs/KENNZAHLEN.md) (German); `npm test` checks that the file matches the corpus. They say the rules catch the shapes they were built for, not that unknown attacks are caught.
+
 ## Field test (2026-11-01)
 
 | Set | PRs | Result |
@@ -140,7 +151,7 @@ What this does not stop: an exception is trusted once a maintainer has merged it
 node --test test/*.test.mjs
 ```
 
-Test fixtures are synthetic: they reproduce the *shape* of the payloads (padding, line length, entropy, tokens, tag syntax), never working code. Modules: `lib/diff.mjs` (patch parsing), `lib/regeln/*` (one file per rule family, pure functions over added lines and blob bytes), `lib/github.mjs` (API client with injectable `fetch`), `lib/pruefung.mjs`, `lib/git.mjs` (sandboxed git child process) and `lib/lokal.mjs` (local `diff`/`scan`: git → API-shaped file list), `lib/konfig/*` (pattern matching, schema, applying rules and exceptions, change detection, `config` commands), `lib/bericht/*` (console, Markdown, SARIF), `bin/action.mjs`, `bin/schleuse.mjs`.
+Test fixtures are synthetic: they reproduce the *shape* of the payloads (padding, line length, entropy, tokens, tag syntax), never working code. Modules: `lib/diff.mjs` (patch parsing), `lib/regeln/*` (one file per rule family, pure functions over added lines and blob bytes), `lib/github.mjs` (API client with injectable `fetch`), `lib/pruefung.mjs`, `lib/git.mjs` (sandboxed git child process) and `lib/lokal.mjs` (local `diff`/`scan`: git → API-shaped file list), `lib/konfig/*` (pattern matching, schema, applying rules and exceptions, change detection, `config` commands), `lib/bericht/*` (console, Markdown, SARIF), `lib/selbsttest/*` (corpus loader, hygiene check, evaluation, reports for `selbsttest`), `bin/action.mjs`, `bin/schleuse.mjs`.
 
 ## Credits
 
