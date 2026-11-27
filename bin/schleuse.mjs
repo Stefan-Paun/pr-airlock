@@ -12,6 +12,7 @@ import { toSarif } from '../lib/bericht/sarif.mjs';
 import { STUFEN } from '../lib/befund.mjs';
 import { configPruefe, configZeige } from '../lib/konfig/befehl.mjs';
 import { konfigAusMergeBase } from '../lib/konfig/git.mjs';
+import { selbsttest } from '../lib/selbsttest/index.mjs';
 
 const HILFE = `schleuse – gate for incoming pull requests (PolinRider-style repo poisoning)
 
@@ -23,6 +24,8 @@ Usage:
   schleuse diff [range]                   check a local commit range via git, no network (a..b, a...b, or one revision;
                                           default: HEAD against the merge-base with main/master)
   schleuse scan [path]                    check every git-tracked file of HEAD in a checked-out repo, no network
+  schleuse selbsttest                     run every rule against the bundled, defused corpus (korpus/) and print
+                                          hit rate and false-alarm rate per rule, no network
 
 Options:
   --fail-on block|warn|info   exit 1 at this severity or higher (default: failOn from .schleuse.json, else block)
@@ -34,12 +37,20 @@ Options:
   --sarif <path>              write a SARIF 2.1.0 report (GitHub code scanning)
   -h, --help                  this help
 
+Selbsttest options:
+  --format text|md|json       output format (md = the page docs/KENNZAHLEN.md)
+  --regel <id|family/*>       only these rules (repeatable or comma-separated)
+  --datum YYYY-MM-DD          generation date written into the md page (default: today)
+  --korpus <dir>              another corpus directory (default: korpus/ next to this tool)
+  Exit codes: 0 passed, 1 an expected finding is missing, a good case raises warn or higher, or the corpus breaks
+  a hygiene rule; 2 usage error or malformed corpus.
+
 Order: --fail-on > .schleuse.json (base branch only; for pr via API at the target commit) > defaults.
 Token: GITHUB_TOKEN, GH_TOKEN or \`gh auth token\`. Exit codes: 0 clean/below threshold, 1 findings at threshold, 2 usage/API error.
 `;
 
 export function parseArgs(argv) {
-  const o = { befehl: null, ziel: [], failOn: null, base: null, json: null, md: null, sarif: null, repo: null };
+  const o = { befehl: null, ziel: [], failOn: null, base: null, json: null, md: null, sarif: null, repo: null, format: null, regel: [], datum: null, korpus: null };
   let ende = false;
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
@@ -53,12 +64,25 @@ export function parseArgs(argv) {
     else if (a === '--json') o.json = next();
     else if (a === '--md') o.md = next();
     else if (a === '--sarif') o.sarif = next();
+    else if (a === '--format') o.format = next();
+    else if (a === '--regel') o.regel.push(next());
+    else if (a === '--datum') o.datum = next();
+    else if (a === '--korpus') o.korpus = next();
     else if (a.startsWith('-')) throw new Error(`Unknown option ${a}`);
     else if (!o.befehl) o.befehl = a;
     else o.ziel.push(a);
   }
   if (!o.befehl) return { ...o, befehl: 'help' };
-  if (!['pr', 'files', 'diff', 'scan', 'config'].includes(o.befehl)) throw new Error(`Unknown command ${o.befehl}`);
+  if (!['pr', 'files', 'diff', 'scan', 'config', 'selbsttest'].includes(o.befehl)) throw new Error(`Unknown command ${o.befehl}`);
+  const nurSelbsttest = o.format !== null || o.regel.length || o.datum !== null || o.korpus !== null;
+  if (o.befehl === 'selbsttest') {
+    if (o.ziel.length) throw new Error('selbsttest takes no arguments');
+    if (o.failOn !== null || o.base || o.json || o.md || o.sarif || o.repo) throw new Error('selbsttest: only --format, --regel, --datum and --korpus apply');
+    if (o.format !== null && !['text', 'md', 'json'].includes(o.format)) throw new Error('--format must be text, md or json');
+    if (o.datum !== null && !/^\d{4}-\d{2}-\d{2}$/.test(o.datum)) throw new Error('--datum must be YYYY-MM-DD');
+    return o;
+  }
+  if (nurSelbsttest) throw new Error('--format, --regel, --datum and --korpus only apply to selbsttest');
   if (o.failOn !== null && !STUFEN.includes(o.failOn)) throw new Error('--fail-on must be block, warn or info');
   if (o.befehl === 'config') {
     if (!['pruefe', 'zeige'].includes(o.ziel[0])) throw new Error('Which config command? schleuse config pruefe|zeige [file]');
@@ -86,6 +110,11 @@ async function main() {
   if (o.befehl === 'help') { process.stdout.write(HILFE); return 0; }
   const log = (s) => process.stderr.write(`  · ${s}\n`);
   if (o.befehl === 'config') return configBefehl(o);
+  if (o.befehl === 'selbsttest') {
+    const r = await selbsttest({ korpus: o.korpus ? path.resolve(o.korpus) : undefined, regeln: o.regel, format: o.format || 'text', datum: o.datum });
+    process.stdout.write(r.stdout.endsWith('\n') ? r.stdout : r.stdout + '\n');
+    return r.code;
+  }
   let ergebnis;
   const eingaben = { failOn: o.failOn };
   if (o.befehl === 'pr') {
