@@ -113,3 +113,30 @@ test('Markdown ist reproduzierbar und braucht ein Datum', () => {
   assert.throws(() => alsMarkdown(w, {}), /datum/);
   assert.match(heute(new Date(2026, 0, 5)), /^2026-01-05$/);
 });
+
+test('Review-Funde: ungültiges Datum, fremde Einträge im Korpus, Steuerzeichen im Pfad, JSON-escapte Adresse', async () => {
+  const { pruefeHygiene } = await import('../lib/selbsttest/hygiene.mjs');
+  const { ladeKorpus } = await import('../lib/selbsttest/korpus.mjs');
+  const { symlink } = await import('node:fs/promises');
+  assert.throws(() => parseArgs(['selbsttest', '--datum', '2026-99-99']), /valid date/);
+  await assert.rejects(selbsttest({ format: 'md', datum: '2026-02-30' }), /valid date/);
+  assert.ok(pruefeHygiene('"url": "https:\\/\\/c2.beispiel-angreifer.ru\\/x"').length > 0);
+
+  const mitDatei = await miniKorpus({ 'boese/treffer': gitignoreFall('treffer', 'config.bat') });
+  await writeFile(path.join(mitDatei, 'boese', 'streu.txt'), 'x');
+  const mitLink = await miniKorpus({ 'boese/treffer': gitignoreFall('treffer', 'config.bat') });
+  await symlink(path.join(mitLink, 'boese', 'treffer'), path.join(mitLink, 'boese', 'link'));
+  const steuer = await miniKorpus({ 'gut/steuer': { fall: { kennung: 'steuer', art: 'gut', warum: 'Pfad mit Steuerzeichen', dateien: [{ pfad: 'a\u001b]0;x\u0007.js', hex: '00' }] } } });
+  const ohneStufe = await miniKorpus({ 'gut/still': { ...guterFall('still', '    "lint": "eslint .",'), fall: { ...guterFall('still', '').fall, bekannt: [{ art: 'fehlalarm', regel: 'autostart/npm-lifecycle', grund: 'Stufe fehlt hier absichtlich' }] } } });
+  try {
+    await assert.rejects(ladeKorpus(mitDatei), /kein Fall-Ordner/);
+    await assert.rejects(ladeKorpus(mitLink), /kein Fall-Ordner/);
+    await assert.rejects(ladeKorpus(steuer), /Steuerzeichen/);
+    await assert.rejects(ladeKorpus(ohneStufe), /bekannt\.stufe/);
+    const r = await lauf(['selbsttest', '--korpus', steuer]);
+    assert.equal(r.code, 2);
+    assert.ok(!r.stderr.includes('\u001b'), 'keine Escape-Sequenz im Terminal');
+  } finally {
+    for (const w of [mitDatei, mitLink, steuer, ohneStufe]) await rm(w, { recursive: true, force: true });
+  }
+});

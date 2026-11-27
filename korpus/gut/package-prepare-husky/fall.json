@@ -7,6 +7,7 @@
     {
       "art": "fehlalarm",
       "regel": "autostart/npm-lifecycle",
+      "stufe": "warn",
       "grund": "Die Regel warnt bewusst bei jedem neuen install/prepare-Skript, weil es bei jedem Install läuft; „husky“ ist harmlos, aber eine Liste harmloser Werte wäre leicht zu missbrauchen. Nur warn, blockt mit dem Standard nicht."
     }
   ],

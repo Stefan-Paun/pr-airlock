@@ -7,6 +7,7 @@
     {
       "art": "fehlalarm",
       "regel": "tarnung/base64-block",
+      "stufe": "warn",
       "grund": "Die Regel nimmt nur data:image/ aus. Eine eingebettete Schrift sieht für sie aus wie ein verpackter Payload; nur warn."
     }
   ],

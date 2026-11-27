@@ -113,3 +113,15 @@ test('Ganzer Korpus: läuft ohne Netz in wenigen Sekunden und hat keine offene A
     assert.equal(w.ok, true);
   } finally { globalThis.fetch = alt; }
 });
+
+test('Review-Funde: Tippfehler in --regel, bekannter Fehlalarm steigt von warn auf block', () => {
+  assert.throws(() => regelFilter(['anhang/fuelung']), /passt zu keiner bekannten Regel/);
+  assert.throws(() => regelFilter(['foo/*']), /passt zu keiner bekannten Regel/);
+  assert.throws(() => regelFilter(['']), /ungültiges Muster/);
+  const faelle = [fall('g1', 'gut', [], [{ art: 'fehlalarm', regel: 'autostart/vscode-task', stufe: 'warn', grund: 'npm-Watcher ohne command' }])];
+  const warn = werte(faelle, new Map([['g1', [b('autostart/vscode-task', 'warn')]]]));
+  assert.equal(warn.ok, true);
+  const block = werte(faelle, new Map([['g1', [b('autostart/vscode-task', 'block')]]]));
+  assert.equal(block.ok, false, 'aus warn wurde block: das ist eine neue Abweichung');
+  assert.deepEqual(block.abweichungen.filter((a) => !a.bekannt).map((a) => a.art).sort(), ['fehlalarm', 'veraltet']);
+});

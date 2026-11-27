@@ -7,6 +7,7 @@
     {
       "art": "fehlalarm",
       "regel": "autostart/vscode-task",
+      "stufe": "warn",
       "grund": "Ein npm-Watch-Task mit folderOpen hat kein command-Feld; die Regel warnt trotzdem, weil sie nicht prüft, was hinter dem npm-Skript steht. Nur warn."
     }
   ],

@@ -122,12 +122,12 @@ What this does not stop: an exception is trusted once a maintainer has merged it
 ## Self-test: hit rate and false alarms per rule
 
 ```sh
-node bin/schleuse.mjs selbsttest                      # table per rule, exit 1 on a missed finding or a false alarm
+node bin/schleuse.mjs selbsttest                      # table per rule, exit 1 on an unmarked miss or false alarm
 node bin/schleuse.mjs selbsttest --regel 'anhang/*'   # one rule or family
 node bin/schleuse.mjs selbsttest --format md --datum 2026-11-27 > docs/KENNZAHLEN.md
 ```
 
-Every rule runs against a bundled corpus in [`korpus/`](korpus/): one folder per case with a `fall.json` (id, `boese`/`gut`, expected rules, reason) and the diff as a fixture. *Bad* cases reproduce only the **shape** of known attacks (padding, appended block, auto-run entry); the payload is an inert placeholder such as `console.log('platzhalter')`, and a hygiene check in `npm test` rejects execution calls, addresses outside reserved example domains, and Base64 or escape runs that decode to text. *Good* cases are harmless changes that are easy to confuse: minified files, build configs, long data lines, editor tasks, translations, lockfile updates. Rates always come with their counts. Known limits of a rule are marked in the case and listed, not hidden; if one disappears, the self-test fails until the corpus is updated. The current numbers are in [docs/KENNZAHLEN.md](docs/KENNZAHLEN.md) (German); `npm test` checks that the file matches the corpus. They say the rules catch the shapes they were built for, not that unknown attacks are caught.
+Every rule runs against a bundled corpus in [`korpus/`](korpus/): one folder per case with a `fall.json` (id, `boese`/`gut`, expected rules, reason) and the diff as a fixture. *Bad* cases reproduce only the **shape** of known attacks (padding, appended block, auto-run entry); the payload is an inert placeholder such as `console.log('platzhalter')`, and a hygiene check in `npm test` rejects execution calls, addresses outside reserved example domains, and Base64 or escape runs that decode to text. *Good* cases are harmless changes that are easy to confuse: minified files, build configs, long data lines, editor tasks, translations, lockfile updates. Rates always come with their counts. Known limits of a rule are marked in the case (`bekannt`, with the severity for a false alarm) and listed, not hidden; they count in the rates but do not fail the run. If one disappears or a known false alarm changes severity, the self-test fails until the corpus is updated. The current numbers are in [docs/KENNZAHLEN.md](docs/KENNZAHLEN.md) (German); `npm test` checks that the file matches the corpus. They say the rules catch the shapes they were built for, not that unknown attacks are caught.
 
 ## Field test (2026-11-01)
 

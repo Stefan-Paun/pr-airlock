@@ -10,9 +10,10 @@ import { toConsole } from '../lib/bericht/konsole.mjs';
 import { toMarkdown } from '../lib/bericht/markdown.mjs';
 import { toSarif } from '../lib/bericht/sarif.mjs';
 import { STUFEN } from '../lib/befund.mjs';
+import { saeubere } from '../lib/diff.mjs';
 import { configPruefe, configZeige } from '../lib/konfig/befehl.mjs';
 import { konfigAusMergeBase } from '../lib/konfig/git.mjs';
-import { selbsttest } from '../lib/selbsttest/index.mjs';
+import { selbsttest, gueltigesDatum } from '../lib/selbsttest/index.mjs';
 
 const HILFE = `schleuse – gate for incoming pull requests (PolinRider-style repo poisoning)
 
@@ -43,7 +44,8 @@ Selbsttest options:
   --datum YYYY-MM-DD          generation date written into the md page (default: today)
   --korpus <dir>              another corpus directory (default: korpus/ next to this tool)
   Exit codes: 0 passed, 1 an expected finding is missing, a good case raises warn or higher, or the corpus breaks
-  a hygiene rule; 2 usage error or malformed corpus.
+  a hygiene rule (deviations marked as known in the case's fall.json are listed but do not fail; a known
+  deviation that no longer occurs does); 2 usage error or malformed corpus.
 
 Order: --fail-on > .schleuse.json (base branch only; for pr via API at the target commit) > defaults.
 Token: GITHUB_TOKEN, GH_TOKEN or \`gh auth token\`. Exit codes: 0 clean/below threshold, 1 findings at threshold, 2 usage/API error.
@@ -79,7 +81,7 @@ export function parseArgs(argv) {
     if (o.ziel.length) throw new Error('selbsttest takes no arguments');
     if (o.failOn !== null || o.base || o.json || o.md || o.sarif || o.repo) throw new Error('selbsttest: only --format, --regel, --datum and --korpus apply');
     if (o.format !== null && !['text', 'md', 'json'].includes(o.format)) throw new Error('--format must be text, md or json');
-    if (o.datum !== null && !/^\d{4}-\d{2}-\d{2}$/.test(o.datum)) throw new Error('--datum must be YYYY-MM-DD');
+    if (o.datum !== null && !gueltigesDatum(o.datum)) throw new Error('--datum must be a valid date YYYY-MM-DD');
     return o;
   }
   if (nurSelbsttest) throw new Error('--format, --regel, --datum and --korpus only apply to selbsttest');
@@ -165,5 +167,5 @@ export function istHauptmodul(argv1 = process.argv[1]) {
 
 if (istHauptmodul()) {
   // exitCode statt exit(): sonst wird die Ausgabe in Pipes bei 64 KB abgeschnitten.
-  main().then((code) => { process.exitCode = code; }).catch((e) => { console.error(`schleuse: ${e.message}`); process.exitCode = 2; });
+  main().then((code) => { process.exitCode = code; }).catch((e) => { console.error(`schleuse: ${saeubere(e.message)}`); process.exitCode = 2; });
 }

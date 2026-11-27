@@ -7,6 +7,7 @@
     {
       "art": "fehlalarm",
       "regel": "autostart/vscode-task",
+      "stufe": "block",
       "grund": "Die Regel blockt bewusst jeden folderOpen-Task mit Kommando, auch einen harmlosen Watcher: genau diese Form nutzt TasksJacker, und die Regel ist geschützt. Ausweg ist eine benannte Ausnahme mit Grund."
     }
   ],
