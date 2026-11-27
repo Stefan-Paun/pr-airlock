@@ -1,0 +1,13 @@
+{
+  "kennung": "vendor-min",
+  "art": "gut",
+  "warum": "Minifizierte Bibliothek unter vendor/ mit einer langen Zeile voller split/join.",
+  "erwartet": [],
+  "dateien": [
+    {
+      "pfad": "vendor/mini.min.js",
+      "status": "added",
+      "diff": "1.diff"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "kennung": "favicon-ico-echt",
+  "art": "gut",
+  "warum": "Echtes .ico.",
+  "erwartet": [],
+  "dateien": [
+    {
+      "pfad": "public/favicon.ico",
+      "status": "added",
+      "hex": "0000010001001010000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "kennung": "vscode-launch",
+  "art": "gut",
+  "warum": "Debug-Konfiguration in .vscode/launch.json.",
+  "erwartet": [],
+  "dateien": [
+    {
+      "pfad": ".vscode/launch.json",
+      "status": "added",
+      "diff": "1.diff"
+    }
+  ]
+}

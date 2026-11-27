@@ -1,0 +1,13 @@
+{
+  "kennung": "workflow-labeler",
+  "art": "gut",
+  "warum": "pull_request_target ohne Checkout des PR-Heads (Labeler).",
+  "erwartet": [],
+  "dateien": [
+    {
+      "pfad": ".github/workflows/labeler.yml",
+      "status": "added",
+      "diff": "1.diff"
+    }
+  ]
+}

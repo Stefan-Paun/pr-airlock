@@ -1,0 +1,18 @@
+{
+  "kennung": "fuellung-ohne-token",
+  "art": "boese",
+  "warum": "Füllung, dahinter hohe Entropie, aber kein bekanntes Ausführungs-Token: die Regel warnt nur.",
+  "erwartet": [
+    {
+      "regel": "anhang/fuellung",
+      "stufe": "warn"
+    }
+  ],
+  "dateien": [
+    {
+      "pfad": "src/theme.js",
+      "status": "modified",
+      "diff": "1.diff"
+    }
+  ]
+}

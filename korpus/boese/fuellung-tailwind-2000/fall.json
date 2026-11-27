@@ -1,0 +1,18 @@
+{
+  "kennung": "fuellung-tailwind-2000",
+  "art": "boese",
+  "warum": "Füllung mit 2000 Leerzeichen in tailwind.config.js, so weit rechts, dass kein Diff-Viewer sie zeigt.",
+  "erwartet": [
+    {
+      "regel": "anhang/fuellung",
+      "stufe": "block"
+    }
+  ],
+  "dateien": [
+    {
+      "pfad": "tailwind.config.js",
+      "status": "modified",
+      "diff": "1.diff"
+    }
+  ]
+}

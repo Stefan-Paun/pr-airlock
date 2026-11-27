@@ -1,0 +1,21 @@
+{
+  "kennung": "vscode-tasks-watch-shell",
+  "art": "gut",
+  "warum": "Watch-Task als Shell-Kommando mit runOn: folderOpen (legitimer Komfort, aber dieselbe Form wie TasksJacker).",
+  "erwartet": [],
+  "bekannt": [
+    {
+      "art": "fehlalarm",
+      "regel": "autostart/vscode-task",
+      "stufe": "block",
+      "grund": "Die Regel blockt bewusst jeden folderOpen-Task mit Kommando, auch einen harmlosen Watcher: genau diese Form nutzt TasksJacker, und die Regel ist geschützt. Ausweg ist eine benannte Ausnahme mit Grund."
+    }
+  ],
+  "dateien": [
+    {
+      "pfad": ".vscode/tasks.json",
+      "status": "added",
+      "diff": "1.diff"
+    }
+  ]
+}

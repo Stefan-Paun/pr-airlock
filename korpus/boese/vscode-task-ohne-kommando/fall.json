@@ -1,0 +1,18 @@
+{
+  "kennung": "vscode-task-ohne-kommando",
+  "art": "boese",
+  "warum": "folderOpen-Task ohne eigenes Kommando (hängt an einem anderen Task): warn.",
+  "erwartet": [
+    {
+      "regel": "autostart/vscode-task",
+      "stufe": "warn"
+    }
+  ],
+  "dateien": [
+    {
+      "pfad": ".vscode/tasks.json",
+      "status": "modified",
+      "diff": "1.diff"
+    }
+  ]
+}

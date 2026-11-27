@@ -1,0 +1,13 @@
+{
+  "kennung": "lockfile-yarn",
+  "art": "gut",
+  "warum": "Update in yarn.lock (v1).",
+  "erwartet": [],
+  "dateien": [
+    {
+      "pfad": "yarn.lock",
+      "status": "modified",
+      "diff": "1.diff"
+    }
+  ]
+}

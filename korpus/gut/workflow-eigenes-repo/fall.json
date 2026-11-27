@@ -1,0 +1,13 @@
+{
+  "kennung": "workflow-eigenes-repo",
+  "art": "gut",
+  "warum": "Workflow-Änderung aus dem eigenen Repo (kein Fork).",
+  "erwartet": [],
+  "dateien": [
+    {
+      "pfad": ".github/workflows/ci.yml",
+      "status": "modified",
+      "diff": "1.diff"
+    }
+  ]
+}

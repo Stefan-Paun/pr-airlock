@@ -1,0 +1,25 @@
+{
+  "kennung": "fuellung-knapp-unter-schwelle",
+  "art": "boese",
+  "warum": "Füllung mit 110 Leerzeichen, also knapp unter der Schwelle von 120. Zeigt die bewusste Grenze der Regel.",
+  "erwartet": [
+    {
+      "regel": "anhang/fuellung",
+      "stufe": "block"
+    }
+  ],
+  "bekannt": [
+    {
+      "art": "luecke",
+      "regel": "anhang/fuellung",
+      "grund": "Die Schwelle liegt bei 120 Weißraum-Zeichen (gemessen: echte Fälle haben 500 bis 2000). Kürzere Füllungen sind auf dem Bildschirm meist noch sichtbar; die Schwelle ist per .schleuse.json senkbar."
+    }
+  ],
+  "dateien": [
+    {
+      "pfad": "postcss.config.cjs",
+      "status": "modified",
+      "diff": "1.diff"
+    }
+  ]
+}

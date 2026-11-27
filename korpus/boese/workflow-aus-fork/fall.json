@@ -1,0 +1,21 @@
+{
+  "kennung": "workflow-aus-fork",
+  "art": "boese",
+  "warum": "Ein Fork ändert eine Workflow-Datei.",
+  "erwartet": [
+    {
+      "regel": "projekt/workflow-aus-fork",
+      "stufe": "warn"
+    }
+  ],
+  "kontext": {
+    "ausFork": true
+  },
+  "dateien": [
+    {
+      "pfad": ".github/workflows/ci.yml",
+      "status": "modified",
+      "diff": "1.diff"
+    }
+  ]
+}

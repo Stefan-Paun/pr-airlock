@@ -1,0 +1,18 @@
+{
+  "kennung": "fuellung-postcss-507",
+  "art": "boese",
+  "warum": "Variante-1-Form: 507 Leerzeichen hinter der letzten echten Zeile, dahinter ein Platzhalter mit Ausführungs-Token.",
+  "erwartet": [
+    {
+      "regel": "anhang/fuellung",
+      "stufe": "block"
+    }
+  ],
+  "dateien": [
+    {
+      "pfad": "postcss.config.mjs",
+      "status": "modified",
+      "diff": "1.diff"
+    }
+  ]
+}

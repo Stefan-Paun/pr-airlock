@@ -1,0 +1,18 @@
+{
+  "kennung": "riesenzeile-quelle",
+  "art": "boese",
+  "warum": "Dieselbe Riesenzeile in einer normalen Quelldatei: warn statt block.",
+  "erwartet": [
+    {
+      "regel": "anhang/riesenzeile",
+      "stufe": "warn"
+    }
+  ],
+  "dateien": [
+    {
+      "pfad": "src/lib/format.js",
+      "status": "modified",
+      "diff": "1.diff"
+    }
+  ]
+}

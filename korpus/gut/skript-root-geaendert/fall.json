@@ -1,0 +1,13 @@
+{
+  "kennung": "skript-root-geaendert",
+  "art": "gut",
+  "warum": "Bestehendes Skript im Projektstamm wird geändert, nicht neu angelegt.",
+  "erwartet": [],
+  "dateien": [
+    {
+      "pfad": "build.sh",
+      "status": "modified",
+      "diff": "1.diff"
+    }
+  ]
+}

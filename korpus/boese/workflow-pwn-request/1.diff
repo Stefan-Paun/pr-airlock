@@ -1,0 +1,11 @@
+@@ -0,0 +1,10 @@
++name: vorschau
++on: pull_request_target
++jobs:
++  bau:
++    runs-on: ubuntu-latest
++    steps:
++      - uses: actions/checkout@v4
++        with:
++          ref: ${{ github.event.pull_request.head.sha }}
++      - run: npm run build

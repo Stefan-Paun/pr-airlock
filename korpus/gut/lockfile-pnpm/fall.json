@@ -1,0 +1,13 @@
+{
+  "kennung": "lockfile-pnpm",
+  "art": "gut",
+  "warum": "Renovate-Update in pnpm-lock.yaml.",
+  "erwartet": [],
+  "dateien": [
+    {
+      "pfad": "pnpm-lock.yaml",
+      "status": "modified",
+      "diff": "1.diff"
+    }
+  ]
+}

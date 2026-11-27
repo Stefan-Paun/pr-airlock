@@ -1,0 +1,13 @@
+{
+  "kennung": "lorem-string",
+  "art": "gut",
+  "warum": "Langer Text mit niedriger Entropie und ohne Token.",
+  "erwartet": [],
+  "dateien": [
+    {
+      "pfad": "src/platzhaltertext.js",
+      "status": "added",
+      "diff": "1.diff"
+    }
+  ]
+}

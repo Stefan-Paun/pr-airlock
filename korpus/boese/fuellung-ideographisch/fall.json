@@ -1,0 +1,18 @@
+{
+  "kennung": "fuellung-ideographisch",
+  "art": "boese",
+  "warum": "Füllung aus ideographischen Leerzeichen (U+3000) in einer Babel-Konfiguration.",
+  "erwartet": [
+    {
+      "regel": "anhang/fuellung",
+      "stufe": "block"
+    }
+  ],
+  "dateien": [
+    {
+      "pfad": "babel.config.js",
+      "status": "modified",
+      "diff": "1.diff"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "kennung": "csv-daten",
+  "art": "gut",
+  "warum": "CSV mit langen Zeilen.",
+  "erwartet": [],
+  "dateien": [
+    {
+      "pfad": "data/messwerte.csv",
+      "status": "added",
+      "diff": "1.diff"
+    }
+  ]
+}

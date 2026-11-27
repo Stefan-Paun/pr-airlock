@@ -1,0 +1,13 @@
+{
+  "kennung": "sourcemap",
+  "art": "gut",
+  "warum": "Source-Map mit einer sehr langen mappings-Zeile.",
+  "erwartet": [],
+  "dateien": [
+    {
+      "pfad": "dist/bundle.js.map",
+      "status": "added",
+      "diff": "1.diff"
+    }
+  ]
+}

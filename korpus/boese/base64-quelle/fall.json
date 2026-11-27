@@ -1,0 +1,18 @@
+{
+  "kennung": "base64-quelle",
+  "art": "boese",
+  "warum": "Ein Base64-Block mit 2400 Zeichen in einer Quelldatei (dekodiert nur Null-Bytes).",
+  "erwartet": [
+    {
+      "regel": "tarnung/base64-block",
+      "stufe": "warn"
+    }
+  ],
+  "dateien": [
+    {
+      "pfad": "src/assets/lader.js",
+      "status": "modified",
+      "diff": "1.diff"
+    }
+  ]
+}

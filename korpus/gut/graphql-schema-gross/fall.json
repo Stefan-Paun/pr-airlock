@@ -1,0 +1,13 @@
+{
+  "kennung": "graphql-schema-gross",
+  "art": "gut",
+  "warum": "Generiertes Schema unter build/ als lange Zeile.",
+  "erwartet": [],
+  "dateien": [
+    {
+      "pfad": "build/schema.js",
+      "status": "added",
+      "diff": "1.diff"
+    }
+  ]
+}

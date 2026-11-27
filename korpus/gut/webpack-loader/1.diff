@@ -1,0 +1,3 @@
+@@ -12,1 +12,2 @@
+     rules: [
++      { test: /\.svg$/, type: 'asset/resource' },

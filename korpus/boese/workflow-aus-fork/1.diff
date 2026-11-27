@@ -1,0 +1,4 @@
+@@ -10,2 +10,3 @@
+     steps:
+       - uses: actions/checkout@v4
++      - run: npm run lint

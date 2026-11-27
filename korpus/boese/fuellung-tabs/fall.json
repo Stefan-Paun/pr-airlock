@@ -1,0 +1,18 @@
+{
+  "kennung": "fuellung-tabs",
+  "art": "boese",
+  "warum": "Füllung aus 200 Tabulatoren in next.config.mjs.",
+  "erwartet": [
+    {
+      "regel": "anhang/fuellung",
+      "stufe": "block"
+    }
+  ],
+  "dateien": [
+    {
+      "pfad": "next.config.mjs",
+      "status": "modified",
+      "diff": "1.diff"
+    }
+  ]
+}

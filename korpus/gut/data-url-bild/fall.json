@@ -1,0 +1,13 @@
+{
+  "kennung": "data-url-bild",
+  "art": "gut",
+  "warum": "Eingebettetes Data-URL-Bild in einer Quelldatei.",
+  "erwartet": [],
+  "dateien": [
+    {
+      "pfad": "src/icons.js",
+      "status": "added",
+      "diff": "1.diff"
+    }
+  ]
+}

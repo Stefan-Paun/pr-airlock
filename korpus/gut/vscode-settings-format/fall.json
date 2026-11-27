@@ -1,0 +1,13 @@
+{
+  "kennung": "vscode-settings-format",
+  "art": "gut",
+  "warum": "Format-on-Save in .vscode/settings.json.",
+  "erwartet": [],
+  "dateien": [
+    {
+      "pfad": ".vscode/settings.json",
+      "status": "modified",
+      "diff": "1.diff"
+    }
+  ]
+}

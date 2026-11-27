@@ -1,0 +1,13 @@
+{
+  "kennung": "docker-compose",
+  "art": "gut",
+  "warum": "Dienst in docker-compose.yml.",
+  "erwartet": [],
+  "dateien": [
+    {
+      "pfad": "docker-compose.yml",
+      "status": "modified",
+      "diff": "1.diff"
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "kennung": "fuellung-html",
+  "art": "boese",
+  "warum": "Angehängter Script-Block hinter Leerraum am Ende einer HTML-Datei.",
+  "erwartet": [
+    {
+      "regel": "anhang/fuellung",
+      "stufe": "block"
+    }
+  ],
+  "dateien": [
+    {
+      "pfad": "public/index.html",
+      "status": "modified",
+      "diff": "1.diff"
+    }
+  ]
+}

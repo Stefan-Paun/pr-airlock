@@ -1,0 +1,18 @@
+{
+  "kennung": "magic-ttf-text",
+  "art": "boese",
+  "warum": "Eine .ttf, die nur Text enthält.",
+  "erwartet": [
+    {
+      "regel": "tarnung/magic-bytes",
+      "stufe": "block"
+    }
+  ],
+  "dateien": [
+    {
+      "pfad": "assets/fonts/inter.ttf",
+      "status": "added",
+      "hex": "706c61747a68616c746572206b65696e65207363687269667420"
+    }
+  ]
+}

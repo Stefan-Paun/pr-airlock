@@ -1,0 +1,18 @@
+{
+  "kennung": "marker-v1-decoder",
+  "art": "boese",
+  "warum": "Name der Decoder-Funktion der ersten Variante.",
+  "erwartet": [
+    {
+      "regel": "marker/polinrider-v1-decoder",
+      "stufe": "block"
+    }
+  ],
+  "dateien": [
+    {
+      "pfad": "src/util.js",
+      "status": "modified",
+      "diff": "1.diff"
+    }
+  ]
+}

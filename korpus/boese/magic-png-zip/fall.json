@@ -1,0 +1,18 @@
+{
+  "kennung": "magic-png-zip",
+  "art": "boese",
+  "warum": "Ein „Bild“, das mit dem Kopf eines ZIP-Archivs beginnt: anderes Binärformat, daher warn.",
+  "erwartet": [
+    {
+      "regel": "tarnung/magic-bytes",
+      "stufe": "warn"
+    }
+  ],
+  "dateien": [
+    {
+      "pfad": "docs/img/diagramm.png",
+      "status": "added",
+      "hex": "504b0304140000000800000000000000000000000000000000000000000000000000000000000000000000000000"
+    }
+  ]
+}

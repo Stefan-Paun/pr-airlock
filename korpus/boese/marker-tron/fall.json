@@ -1,0 +1,18 @@
+{
+  "kennung": "marker-tron",
+  "art": "boese",
+  "warum": "Bekannte TRON-Dead-Drop-Adresse als Literal (Blockchain-Adresse, keine Netzadresse).",
+  "erwartet": [
+    {
+      "regel": "marker/polinrider-c2-tron-1",
+      "stufe": "block"
+    }
+  ],
+  "dateien": [
+    {
+      "pfad": "src/wallet.js",
+      "status": "modified",
+      "diff": "1.diff"
+    }
+  ]
+}

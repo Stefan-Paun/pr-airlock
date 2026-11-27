@@ -1,0 +1,13 @@
+{
+  "kennung": "idea-run-config",
+  "art": "gut",
+  "warum": "JetBrains-Run-Konfiguration ohne Start beim Öffnen.",
+  "erwartet": [],
+  "dateien": [
+    {
+      "pfad": ".idea/runConfigurations/dev.xml",
+      "status": "added",
+      "diff": "1.diff"
+    }
+  ]
+}

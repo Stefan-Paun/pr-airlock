@@ -1,0 +1,4 @@
+@@ -1,2 +1,3 @@
+ module.exports = {
++  presets: ['@babel/preset-env'],　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　/* platzhalter: nachgebildete Form, kein Code */ console.log('platzhalter'.split('').join(''), '8HMsaE4gE3 WE3kEJ 35NeD SuMeKqsvS eMvzugw5 kCgswAPqn kbozMs 6z7WGxmgMQV ajEU 9f9fg xdmjbTxuKH Fmb4sVu F94be3MYBM GaeDy vVkRa9e Ncuc f2tuh8pu VirhDfWN9Cs 9ihsP4 n4oj e7Mm59HAD FRKzMQsf WEDgrKNVogM qkXk9');
+ };

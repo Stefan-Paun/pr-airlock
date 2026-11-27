@@ -1,0 +1,13 @@
+{
+  "kennung": "readme-curl-sh",
+  "art": "gut",
+  "warum": "Installationsanleitung in der README mit curl | sh: in Doku nur info.",
+  "erwartet": [],
+  "dateien": [
+    {
+      "pfad": "README.md",
+      "status": "modified",
+      "diff": "1.diff"
+    }
+  ]
+}

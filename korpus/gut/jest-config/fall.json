@@ -1,0 +1,13 @@
+{
+  "kennung": "jest-config",
+  "art": "gut",
+  "warum": "Coverage-Schwelle in jest.config.js.",
+  "erwartet": [],
+  "dateien": [
+    {
+      "pfad": "jest.config.js",
+      "status": "modified",
+      "diff": "1.diff"
+    }
+  ]
+}

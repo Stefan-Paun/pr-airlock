@@ -1,0 +1,18 @@
+{
+  "kennung": "marker-tron-2",
+  "art": "boese",
+  "warum": "Sekundäre TRON-Dead-Drop-Adresse als Literal.",
+  "erwartet": [
+    {
+      "regel": "marker/polinrider-c2-tron-2",
+      "stufe": "block"
+    }
+  ],
+  "dateien": [
+    {
+      "pfad": "src/ziel.js",
+      "status": "modified",
+      "diff": "1.diff"
+    }
+  ]
+}

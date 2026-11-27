@@ -1,0 +1,13 @@
+{
+  "kennung": "fixture-next",
+  "art": "gut",
+  "warum": "Echte Next.js-Konfiguration mit Einrückung und langen Zeilen (vorhandenes Test-Fixture).",
+  "erwartet": [],
+  "dateien": [
+    {
+      "pfad": "next.config.mjs",
+      "status": "added",
+      "fixture": "legit-next.config.mjs.txt"
+    }
+  ]
+}

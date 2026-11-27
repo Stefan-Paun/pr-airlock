@@ -4,7 +4,7 @@
   "description": "Gate for incoming pull requests: reads the PR as data through the GitHub API and blocks PolinRider-style repository poisoning (payloads hidden behind whitespace in config files, fake fonts, auto-run tasks).",
   "type": "module",
   "bin": { "schleuse": "bin/schleuse.mjs" },
-  "scripts": { "test": "node --test test/*.test.mjs" },
+  "scripts": { "test": "node --test test/*.test.mjs", "selbsttest": "node bin/schleuse.mjs selbsttest" },
   "engines": { "node": ">=20" },
   "license": "MIT",
   "private": false

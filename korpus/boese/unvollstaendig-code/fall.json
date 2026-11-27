@@ -1,0 +1,19 @@
+{
+  "kennung": "unvollstaendig-code",
+  "art": "boese",
+  "warum": "Code-Datei ohne Patch, deren Inhalt nicht geladen werden kann: fail-closed, block.",
+  "erwartet": [
+    {
+      "regel": "pruefung/unvollstaendig",
+      "stufe": "block"
+    }
+  ],
+  "dateien": [
+    {
+      "pfad": "src/server.js",
+      "status": "modified",
+      "ohneInhalt": true,
+      "additions": 4000
+    }
+  ]
+}

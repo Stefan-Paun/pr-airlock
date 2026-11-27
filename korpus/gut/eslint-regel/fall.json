@@ -1,0 +1,13 @@
+{
+  "kennung": "eslint-regel",
+  "art": "gut",
+  "warum": "Neue Regel in eslint.config.mjs.",
+  "erwartet": [],
+  "dateien": [
+    {
+      "pfad": "eslint.config.mjs",
+      "status": "modified",
+      "diff": "1.diff"
+    }
+  ]
+}

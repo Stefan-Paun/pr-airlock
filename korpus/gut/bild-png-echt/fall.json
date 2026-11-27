@@ -1,0 +1,13 @@
+{
+  "kennung": "bild-png-echt",
+  "art": "gut",
+  "warum": "Echtes PNG (korrekter Dateikopf).",
+  "erwartet": [],
+  "dateien": [
+    {
+      "pfad": "public/logo.png",
+      "status": "added",
+      "hex": "89504e470d0a1a0a0000000d4948445200000000000000000000000000000000000000000000000000000000000000000000000000000000"
+    }
+  ]
+}

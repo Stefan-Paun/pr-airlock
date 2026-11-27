@@ -1,0 +1,7 @@
+@@ -0,0 +1,6 @@
++<template>
++  <button class="knopf" @click="$emit('klick')"><slot /></button>
++</template>
++<script setup>
++defineEmits(['klick']);
++</script>

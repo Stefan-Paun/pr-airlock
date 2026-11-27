@@ -1,0 +1,18 @@
+{
+  "kennung": "fuellung-fuehrend-506",
+  "art": "boese",
+  "warum": "Variante-3-Form: neue Zeile beginnt mit 506 Leerzeichen, dahinter ein langer Platzhalter-Block.",
+  "erwartet": [
+    {
+      "regel": "anhang/fuellung",
+      "stufe": "block"
+    }
+  ],
+  "dateien": [
+    {
+      "pfad": "eslint.config.mjs",
+      "status": "modified",
+      "diff": "1.diff"
+    }
+  ]
+}

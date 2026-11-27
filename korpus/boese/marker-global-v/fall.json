@@ -1,0 +1,22 @@
+{
+  "kennung": "marker-global-v",
+  "art": "boese",
+  "warum": "Injektions-Global global['_V'] der zweiten Variante.",
+  "erwartet": [
+    {
+      "regel": "marker/polinrider-global-v",
+      "stufe": "block"
+    },
+    {
+      "regel": "anhang/global-tag",
+      "stufe": "block"
+    }
+  ],
+  "dateien": [
+    {
+      "pfad": "eslint.config.mjs",
+      "status": "modified",
+      "diff": "1.diff"
+    }
+  ]
+}

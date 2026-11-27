@@ -1,0 +1,5 @@
+@@ -0,0 +1,4 @@
++#!/bin/sh
++set -e
++npm version patch
++git push --follow-tags

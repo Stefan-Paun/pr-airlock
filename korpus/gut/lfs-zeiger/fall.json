@@ -1,0 +1,13 @@
+{
+  "kennung": "lfs-zeiger",
+  "art": "gut",
+  "warum": "Git-LFS-Zeiger unter einer .woff2-Endung.",
+  "erwartet": [],
+  "dateien": [
+    {
+      "pfad": "public/fonts/gross.woff2",
+      "status": "added",
+      "inhalt": "1.txt"
+    }
+  ]
+}

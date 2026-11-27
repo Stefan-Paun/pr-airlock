@@ -1,0 +1,18 @@
+{
+  "kennung": "gitignore-versteck",
+  "art": "boese",
+  "warum": ".gitignore versteckt config.bat, wie die Kampagne es tut.",
+  "erwartet": [
+    {
+      "regel": "projekt/gitignore-versteck",
+      "stufe": "warn"
+    }
+  ],
+  "dateien": [
+    {
+      "pfad": ".gitignore",
+      "status": "modified",
+      "diff": "1.diff"
+    }
+  ]
+}

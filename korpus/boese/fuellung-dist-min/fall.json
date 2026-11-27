@@ -1,0 +1,18 @@
+{
+  "kennung": "fuellung-dist-min",
+  "art": "boese",
+  "warum": "Füllung gilt auch in dist/ und .min.js, wo lange Zeilen sonst normal sind.",
+  "erwartet": [
+    {
+      "regel": "anhang/fuellung",
+      "stufe": "block"
+    }
+  ],
+  "dateien": [
+    {
+      "pfad": "dist/app.min.js",
+      "status": "modified",
+      "diff": "1.diff"
+    }
+  ]
+}

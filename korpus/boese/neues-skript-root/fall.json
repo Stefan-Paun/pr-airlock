@@ -1,0 +1,18 @@
+{
+  "kennung": "neues-skript-root",
+  "art": "boese",
+  "warum": "Neues PowerShell-Skript im Projektstamm.",
+  "erwartet": [
+    {
+      "regel": "projekt/neues-skript-im-root",
+      "stufe": "warn"
+    }
+  ],
+  "dateien": [
+    {
+      "pfad": "install.ps1",
+      "status": "added",
+      "diff": "1.diff"
+    }
+  ]
+}

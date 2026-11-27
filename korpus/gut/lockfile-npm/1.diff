@@ -1,0 +1,9 @@
+@@ -120,5 +120,5 @@
+     "node_modules/kern-lib": {
+-      "version": "2.4.0",
+-      "resolved": "https://registry.npmjs.example/kern-lib/-/kern-lib-2.4.0.tgz",
+-      "integrity": "sha512-vUEWIkHuqpxMYN7NwC3Qrg0TfVKO2tvWr+3Pwr/Pp5FKD+eWTXr/16rLT9jF1HxaYDrzwygTJ6sIWoWN69Ro5A==",
++      "version": "2.4.1",
++      "resolved": "https://registry.npmjs.example/kern-lib/-/kern-lib-2.4.1.tgz",
++      "integrity": "sha512-p/oZ7RiFmftsQ10dzf634tjnEa4hvd6VqQgrXM8G4y0cbf1wbRbr4aYssL0NvP/WMDA8FSp3jB19KJvMLiitOw==",
+       "license": "MIT"

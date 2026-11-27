@@ -1,0 +1,18 @@
+{
+  "kennung": "magic-woff2-js",
+  "art": "boese",
+  "warum": "Eine „Schrift“ fa-solid-400.woff2, die in Wahrheit Text mit JavaScript-Form ist.",
+  "erwartet": [
+    {
+      "regel": "tarnung/magic-bytes",
+      "stufe": "block"
+    }
+  ],
+  "dateien": [
+    {
+      "pfad": "public/fonts/fa-solid-400.woff2",
+      "status": "added",
+      "inhalt": "1.txt"
+    }
+  ]
+}

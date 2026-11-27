@@ -1,0 +1,13 @@
+{
+  "kennung": "docs-iwr-iex",
+  "art": "gut",
+  "warum": "Windows-Anleitung in den Docs mit iwr | iex: in Doku nur info.",
+  "erwartet": [],
+  "dateien": [
+    {
+      "pfad": "docs/windows.md",
+      "status": "modified",
+      "diff": "1.diff"
+    }
+  ]
+}

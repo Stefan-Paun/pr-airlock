@@ -1,0 +1,13 @@
+{
+  "kennung": "vue-komponente",
+  "art": "gut",
+  "warum": "Vue-Komponente mit Template und Script.",
+  "erwartet": [],
+  "dateien": [
+    {
+      "pfad": "src/components/Knopf.vue",
+      "status": "added",
+      "diff": "1.diff"
+    }
+  ]
+}

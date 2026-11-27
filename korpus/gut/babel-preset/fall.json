@@ -1,0 +1,13 @@
+{
+  "kennung": "babel-preset",
+  "art": "gut",
+  "warum": "Preset in babel.config.js.",
+  "erwartet": [],
+  "dateien": [
+    {
+      "pfad": "babel.config.js",
+      "status": "modified",
+      "diff": "1.diff"
+    }
+  ]
+}

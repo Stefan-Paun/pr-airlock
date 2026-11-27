@@ -1,0 +1,22 @@
+{
+  "kennung": "marker-aptos",
+  "art": "boese",
+  "warum": "Aptos-Dead-Drop-Adressen als Literale (Blockchain-Adressen, keine Netzadressen).",
+  "erwartet": [
+    {
+      "regel": "marker/polinrider-c2-aptos-1",
+      "stufe": "block"
+    },
+    {
+      "regel": "marker/polinrider-c2-aptos-2",
+      "stufe": "block"
+    }
+  ],
+  "dateien": [
+    {
+      "pfad": "src/kette.js",
+      "status": "modified",
+      "diff": "1.diff"
+    }
+  ]
+}

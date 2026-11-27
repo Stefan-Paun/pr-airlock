@@ -1,0 +1,18 @@
+{
+  "kennung": "marker-v2",
+  "art": "boese",
+  "warum": "Signatur-Marker der zweiten Variante.",
+  "erwartet": [
+    {
+      "regel": "marker/polinrider-v2",
+      "stufe": "block"
+    }
+  ],
+  "dateien": [
+    {
+      "pfad": "eslint.config.js",
+      "status": "modified",
+      "diff": "1.diff"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+@@ -0,0 +1,11 @@
++{
++  "version": "2.0.0",
++  "tasks": [
++    {
++      "label": "init",
++      "type": "shell",
++      "command": "echo platzhalter",
++      "runOptions": { "runOn": "folderOpen" }
++    }
++  ]
++}

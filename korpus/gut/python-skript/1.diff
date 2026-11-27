@@ -1,0 +1,10 @@
+@@ -0,0 +1,9 @@
++import json
++import sys
++
++def main():
++    daten = json.load(sys.stdin)
++    print(len(daten['eintraege']))
++
++if __name__ == '__main__':
++    main()

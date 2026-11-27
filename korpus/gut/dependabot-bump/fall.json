@@ -1,0 +1,13 @@
+{
+  "kennung": "dependabot-bump",
+  "art": "gut",
+  "warum": "Versionssprung einer Abhängigkeit in package.json.",
+  "erwartet": [],
+  "dateien": [
+    {
+      "pfad": "package.json",
+      "status": "modified",
+      "diff": "1.diff"
+    }
+  ]
+}

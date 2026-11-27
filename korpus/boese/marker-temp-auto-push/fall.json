@@ -1,0 +1,22 @@
+{
+  "kennung": "marker-temp-auto-push",
+  "art": "boese",
+  "warum": "temp_auto_push.bat neu im Projektstamm; der Inhalt ist nur ein echo.",
+  "erwartet": [
+    {
+      "regel": "marker/polinrider-bat",
+      "stufe": "block"
+    },
+    {
+      "regel": "projekt/neues-skript-im-root",
+      "stufe": "warn"
+    }
+  ],
+  "dateien": [
+    {
+      "pfad": "temp_auto_push.bat",
+      "status": "added",
+      "diff": "1.diff"
+    }
+  ]
+}
